@@ -1,0 +1,144 @@
+-- SkillBridge Seed Data Script (02_SkillBridge_SeedData.sql)
+USE `skillbridge_db`;
+
+-- Passwords:
+-- Student (student@skillbridge.io)       -> Student@2026!  (Hash: 58dd397a05c9a84f0410db03eecab337583862ae104aaf84a7f2e949c289c948)
+-- Recruiter (recruiter@nexuscloud.io)   -> Recruiter@2026! (Hash: 4bf0643a9952dc1688166bf1f0b41e2bdca775449864c1044140fb8cac2583d2)
+-- Faculty (faculty@stanford.edu)        -> Faculty@2026!  (Hash: 4382d0145cbd40e186d10a448570baf52614747c69f914883f942888b6319056)
+-- Admin (admin@skillbridge.io)          -> Admin@2026!    (Hash: f0ce0e86206541c60bc47be815f83eba98004f63c883e6d71ff5cc929cb5f9ca)
+
+-- 1. Insert Users (Student, Recruiter, Faculty, Admin)
+INSERT INTO `Users` (`Id`, `Name`, `Email`, `PasswordHash`, `Role`, `PhoneNumber`) VALUES
+(1, 'Aarav Mehta', 'student@skillbridge.io', '58dd397a05c9a84f0410db03eecab337583862ae104aaf84a7f2e949c289c948', 'Student', '+1-415-555-0142'),
+(2, 'Sarah Vance', 'recruiter@nexuscloud.io', '4bf0643a9952dc1688166bf1f0b41e2bdca775449864c1044140fb8cac2583d2', 'Recruiter', '+1-206-555-0188'),
+(3, 'Dr. Alan Grant', 'faculty@stanford.edu', '4382d0145cbd40e186d10a448570baf52614747c69f914883f942888b6319056', 'Faculty', '+1-650-555-0199'),
+(4, 'Elena Rostova', 'admin@skillbridge.io', 'f0ce0e86206541c60bc47be815f83eba98004f63c883e6d71ff5cc929cb5f9ca', 'Admin', '+1-415-555-0100'),
+(5, 'Sophia Zhang', 'sophia.zhang@skillbridge.io', '58dd397a05c9a84f0410db03eecab337583862ae104aaf84a7f2e949c289c948', 'Student', '+1-206-555-0167'),
+(6, 'Marcus Reynolds', 'marcus.reynolds@skillbridge.io', '58dd397a05c9a84f0410db03eecab337583862ae104aaf84a7f2e949c289c948', 'Student', '+1-512-555-0193');
+
+-- 2. Verification Badges
+INSERT INTO `VerificationBadges` (`UserId`, `IsEmailVerified`, `IsPhoneVerified`, `IsLinkedInVerified`, `IsGitHubVerified`) VALUES
+(1, TRUE, TRUE, TRUE, TRUE),
+(2, TRUE, TRUE, TRUE, TRUE),
+(3, TRUE, TRUE, TRUE, TRUE),
+(4, TRUE, TRUE, TRUE, TRUE),
+(5, TRUE, TRUE, TRUE, TRUE),
+(6, TRUE, TRUE, FALSE, TRUE);
+
+-- 3. Companies
+INSERT INTO `Companies` (`UserId`, `CompanyName`, `Industry`, `Website`, `Location`, `Description`) VALUES
+(2, 'Nexus Cloud Technologies', 'Enterprise Cloud Platforms & Distributed Systems', 'https://nexuscloud.io', 'Seattle, WA & San Francisco, CA', 'Nexus Cloud Technologies builds mission-critical cloud platform infrastructure, distributed event streaming engines, and enterprise developer tools powering high-scale software applications.');
+
+-- 4. Skills Master List
+INSERT INTO `Skills` (`Id`, `Name`, `Category`, `Description`) VALUES
+(1, 'C#', 'Programming Languages', 'Object-oriented, type-safe modern language for .NET runtime and cloud architectures'),
+(2, 'ASP.NET Core', 'Web Frameworks', 'Cross-platform, high-performance framework for building modern enterprise web APIs and cloud apps'),
+(3, 'SQL Server', 'Databases', 'Enterprise relational database management system with advanced indexing and query optimization'),
+(4, 'Web API', 'Web Technologies', 'RESTful HTTP web service architecture with OpenAPI specifications and secure JWT endpoints'),
+(5, 'Git', 'Tools & DevOps', 'Distributed version control system, Git branching strategies, and CI/CD workflow integration'),
+(6, 'Entity Framework', 'ORM', 'Object-relational mapper for .NET supporting LINQ, database migrations, and caching'),
+(7, 'HTML/CSS', 'Frontend', 'Modern semantic HTML5, responsive CSS3, and design systems for enterprise web interfaces'),
+(8, 'JavaScript', 'Frontend', 'Dynamic ECMAScript client-side scripting and asynchronous DOM interactivity'),
+(9, 'SignalR', 'Real-time Web', 'Real-time bi-directional WebSocket communication framework for live notifications'),
+(10, 'React', 'Frontend Frameworks', 'Component-based JavaScript library for building responsive Single Page Applications'),
+(11, 'Docker', 'DevOps', 'Containerization platform for packaging, distributing, and running microservices in isolation'),
+(12, 'MySQL', 'Databases', 'Open-source relational database management system with ACID-compliant storage engines'),
+(13, 'Redis', 'Databases & Caching', 'In-memory data structure store used as distributed cache, message broker, and session store'),
+(14, 'Kubernetes', 'DevOps', 'Automated container orchestration, scaling, and management for cloud-native microservices');
+
+-- 5. Career Goals
+INSERT INTO `CareerGoals` (`Id`, `Title`, `Description`) VALUES
+(1, 'ASP.NET Developer', 'Builds robust, enterprise web applications and API microservices using C# and Microsoft .NET ecosystem.'),
+(2, 'Full Stack Engineer', 'Designs and delivers end-to-end web applications from frontend interfaces to backend relational databases.'),
+(3, 'DevOps & Cloud Engineer', 'Automates CI/CD pipelines, containerization, and cloud infrastructure deployment.'),
+(4, 'Distributed Systems Engineer', 'Architects high-throughput event-driven microservices, distributed caching, and resilient APIs.');
+
+-- 6. Career Required Skills
+INSERT INTO `CareerSkills` (`CareerGoalId`, `SkillId`) VALUES
+-- ASP.NET Developer required skills
+(1, 1), (1, 2), (1, 3), (1, 4), (1, 5), (1, 6), (1, 7), (1, 11),
+-- Full Stack Engineer required skills
+(2, 1), (2, 2), (2, 4), (2, 7), (2, 8), (2, 10), (2, 12),
+-- DevOps Engineer required skills
+(3, 3), (3, 5), (3, 11), (3, 12), (3, 14),
+-- Distributed Systems Engineer
+(4, 1), (4, 2), (4, 3), (4, 4), (4, 11), (4, 13);
+
+-- 7. Roadmap Levels for All Career Paths
+INSERT INTO `RoadmapLevels` (`CareerGoalId`, `LevelNumber`, `LevelTitle`, `SkillId`, `Description`) VALUES
+-- ASP.NET Developer (CareerGoalId: 1)
+(1, 1, 'Level 1: C# Core & OOP Mastery', 1, 'Master C# 12 syntax, memory management, LINQ, generics, and object-oriented architecture.'),
+(1, 2, 'Level 2: Database Design & Query Optimization', 3, 'Learn SQL schema normalization, indexing strategies, transactions, and stored procedures.'),
+(1, 3, 'Level 3: Web API & REST Microservices', 4, 'Build high-performance REST APIs, middleware pipelines, JWT auth, and OpenAPI specifications.'),
+(1, 4, 'Level 4: ASP.NET Core & Persistence Layer', 2, 'Implement clean architecture controllers, ADO.NET repositories, and caching strategies.'),
+(1, 5, 'Level 5: Containerization & Cloud Deployment', 11, 'Package applications into Docker containers, setup CI/CD pipelines, and deploy production builds.'),
+
+-- Full Stack Engineer (CareerGoalId: 2)
+(2, 1, 'Level 1: Semantic HTML5 & Responsive CSS', 7, 'Master modern semantic HTML5, CSS Grid, Flexbox, media queries, and design systems.'),
+(2, 2, 'Level 2: Modern JavaScript & DOM Logic', 8, 'Understand ECMAScript asynchronous programming, Fetch API, closures, and modular code.'),
+(2, 3, 'Level 3: Single Page Apps with React', 10, 'Build scalable client-side UI components, custom hooks, and state management in React.'),
+(2, 4, 'Level 4: Backend REST APIs & .NET', 2, 'Develop robust server-side APIs, routing, data models, and business logic pipelines.'),
+(2, 5, 'Level 5: Relational Database Persistence', 12, 'Design relational databases, write ACID-compliant transactions, and optimize MySQL queries.'),
+
+-- DevOps & Cloud Engineer (CareerGoalId: 3)
+(3, 1, 'Level 1: Git Branching & CI/CD Automation', 5, 'Implement automated Git workflows, version control strategies, and continuous integration.'),
+(3, 2, 'Level 2: Relational Databases & Schema Tuning', 12, 'Configure database servers, write stored routines, and perform automated database backups.'),
+(3, 3, 'Level 3: Docker Containerization', 11, 'Build production-ready multi-stage Dockerfiles and container networks for isolation.'),
+(3, 4, 'Level 4: Kubernetes Orchestration', 14, 'Deploy and manage containerized microservice workloads, ingress controllers, and auto-scaling pods.'),
+(3, 5, 'Level 5: Enterprise Database Operations', 3, 'Master enterprise SQL server configuration, failover replication, and query performance tuning.'),
+
+-- Distributed Systems Engineer (CareerGoalId: 4)
+(4, 1, 'Level 1: C# High-Performance Backend', 1, 'Write low-allocation, async/await concurrent C# code and memory-optimized structures.'),
+(4, 2, 'Level 2: RESTful Microservices Architecture', 4, 'Design decoupled service communication, circuit breakers, and idempotent endpoints.'),
+(4, 3, 'Level 3: In-Memory Caching & Redis Messaging', 13, 'Implement distributed caching, pub/sub event channels, and session management with Redis.'),
+(4, 4, 'Level 4: Microservice Container Packaging', 11, 'Containerize decoupled microservices with health check probes and structured logging.'),
+(4, 5, 'Level 5: Database Resilience & Sharding', 3, 'Architect resilient database clusters, connection pooling, and transactional integrity.');
+
+-- 8. Projects Master List
+INSERT INTO `Projects` (`Id`, `Title`, `Difficulty`, `Description`, `RequiredSkillIds`) VALUES
+(1, 'Cloud Multi-Tenant SaaS Platform', 'Advanced', 'Multi-tenant subscription manager with RBAC, billing isolation, JWT authentication, and REST API endpoints.', '1,2,3,4,5,6,11'),
+(2, 'Medical Clinic Real-Time Queue System', 'Intermediate', 'Real-time patient queue dashboard with doctor assignments, status updates, and SignalR live notifications.', '1,2,3,4,9'),
+(3, 'Enterprise E-Commerce Full Stack Storefront', 'Intermediate', 'High-throughput catalog search, shopping cart, order processing, React SPA UI, and MySQL transactional data store.', '2,4,7,8,10,12'),
+(4, 'Automated Student Grade & Placement Portal', 'Beginner', 'CRUD web application for academic record tracking, placement readiness metrics, and analytical reporting.', '1,3,5,7'),
+(5, 'Cloud-Native CI/CD & Kubernetes Cluster', 'Advanced', 'Automated GitOps deployment pipeline packaging microservices in Docker and orchestrating them on Kubernetes.', '3,5,11,12,14'),
+(6, 'High-Throughput Distributed Cache & Event Broker', 'Advanced', 'Distributed in-memory caching layer with Redis pub/sub, resilient ASP.NET microservices, and Docker packaging.', '1,2,3,4,11,13');
+
+-- 9. Student Profiles
+INSERT INTO `StudentProfiles` (`Id`, `UserId`, `Bio`, `College`, `Degree`, `GraduationYear`, `TargetCareerGoalId`, `ReadinessScore`, `LinkedInUrl`, `GitHubUrl`) VALUES
+(1, 1, 'High-performance backend & distributed systems developer specializing in ASP.NET Core, C# 12, MySQL, RESTful Web APIs, and Docker containerization. Actively building production-grade enterprise software.', 'University of California, Berkeley', 'B.S. Computer Science & Engineering', 2026, 1, 84.50, 'https://linkedin.com/in/aaravmehta-dev', 'https://github.com/aaravmehta-code'),
+(2, 5, 'Full Stack Engineer with expertise in building responsive React interfaces, ASP.NET Core Web APIs, and cloud-native databases.', 'University of Washington', 'B.S. Information Systems & Software Engineering', 2026, 2, 76.00, 'https://linkedin.com/in/sophiazhang-tech', 'https://github.com/sophiazhang-dev'),
+(3, 6, 'Cloud & DevOps engineer passionate about Kubernetes orchestration, Docker containers, Linux server automation, and resilient CI/CD pipelines.', 'University of Texas at Austin', 'B.S. Software Engineering', 2025, 3, 68.50, 'https://linkedin.com/in/marcusreynolds-ops', 'https://github.com/marcusreynolds-cloud');
+
+-- 10. Student Skills (Aarav Mehta - Id 1)
+INSERT INTO `StudentSkills` (`StudentId`, `SkillId`, `ConfidencePercentage`, `HasProjectEvidence`, `HasCertificateEvidence`, `HasAssessmentEvidence`, `HasGitHubEvidence`, `HasFacultyVerification`, `VerificationStatus`) VALUES
+(1, 1, 92, TRUE, TRUE, TRUE, TRUE, TRUE, 'VERIFIED'),  -- C#
+(1, 2, 88, TRUE, FALSE, TRUE, TRUE, TRUE, 'VERIFIED'),  -- ASP.NET Core
+(1, 3, 85, TRUE, FALSE, TRUE, TRUE, FALSE, 'VERIFIED'), -- SQL Server
+(1, 4, 88, TRUE, TRUE, TRUE, TRUE, TRUE, 'VERIFIED'),   -- Web API
+(1, 5, 90, TRUE, FALSE, TRUE, TRUE, FALSE, 'VERIFIED'), -- Git
+(1, 6, 82, TRUE, FALSE, TRUE, TRUE, FALSE, 'VERIFIED'), -- Entity Framework
+(1, 7, 80, TRUE, FALSE, FALSE, TRUE, FALSE, 'VERIFIED'),-- HTML/CSS
+(1, 11, 75, TRUE, FALSE, TRUE, TRUE, FALSE, 'VERIFIED');-- Docker
+
+-- 11. Certifications
+INSERT INTO `Certifications` (`StudentId`, `Title`, `IssuingOrganization`, `IssueDate`, `FilePath`, `LinkedSkillId`, `VerificationStatus`, `VerificationHash`, `ReviewedByFacultyId`, `ReviewNotes`) VALUES
+(1, 'Microsoft Certified: Azure Fundamentals & C# Specialist', 'Microsoft', '2025-08-15', '/uploads/csharp_azure_cert.pdf', 1, 'Verified', '8f3a1c9e02b4512a87d401c9b3e1f0a2d5e781a9c3b4e5f6a7b8c9d0e1f2a3b4', 3, 'Verified official Microsoft Azure & C# Certification credential.'),
+(1, 'AWS Certified Cloud Practitioner', 'Amazon Web Services', '2025-11-20', '/uploads/aws_cloud_cert.pdf', 11, 'Verified', 'a591a6d40bf420404a011733cfb7b190d62c65bf0bcda32b57b277d9ad9f146e', 3, 'Verified cloud fundamentals and containerization competencies.');
+
+-- 12. Internships Posted
+INSERT INTO `Internships` (`Id`, `RecruiterId`, `Title`, `CompanyName`, `Location`, `Stipend`, `Description`, `RequiredSkillIds`, `MinimumMatchPercentage`) VALUES
+(1, 2, 'Backend .NET & Cloud Infrastructure Intern', 'Nexus Cloud Technologies', 'Seattle, WA / Hybrid Remote', '$3,500 / month', 'Develop high-throughput REST Web APIs, ADO.NET data access repositories, caching layers, and microservices for enterprise cloud clients.', '1,2,3,4,5,11', 70),
+(2, 2, 'Full Stack Cloud Applications Intern', 'Nexus Cloud Technologies', 'San Francisco, CA / Remote', '$3,200 / month', 'Build modern web user interfaces in React/MVC and architect scalable relational database queries for cloud products.', '2,4,7,8,10,12', 65);
+
+-- 13. Applications
+INSERT INTO `Applications` (`InternshipId`, `StudentId`, `MatchPercentage`, `AutoDecision`, `FinalDecision`, `Notes`) VALUES
+(1, 1, 88, 'Selected', 'Selected', 'Outstanding match in C#, ASP.NET Core, SQL Server, Web API, Git, and Docker. Verified GitHub project portfolio.');
+
+-- 14. Mentorship Requests
+INSERT INTO `Mentorships` (`StudentId`, `FacultyId`, `Topic`, `Status`, `Notes`) VALUES
+(1, 3, 'Enterprise Clean Architecture, ADO.NET Repositories & Cloud Scaling', 'Active', 'Dr. Alan Grant: Evaluated architectural patterns for high-throughput microservices. Aarav demonstrated deep understanding of connection resilience and clean boundary design.');
+
+-- 15. Student Project Submissions
+INSERT INTO `StudentProjects` (`StudentId`, `ProjectId`, `RepositoryUrl`, `LiveDemoUrl`, `ProofFilePath`, `Status`) VALUES
+(1, 1, 'https://github.com/aaravmehta-code/multitenant-saas-platform', 'https://saas-demo.aaravmehta.dev', '/uploads/saas_architecture_proof.pdf', 'Reviewed'),
+(1, 2, 'https://github.com/aaravmehta-code/clinic-queue-api', 'https://queue.aaravmehta.dev', '/uploads/queue_system_proof.pdf', 'Reviewed');
