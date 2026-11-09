@@ -1,0 +1,15 @@
+D:\Desktop\.net project\SkillBridge.DataAccess\bin\Release\net10.0\SkillBridge.DataAccess.deps.json
+D:\Desktop\.net project\SkillBridge.DataAccess\bin\Release\net10.0\SkillBridge.DataAccess.dll
+D:\Desktop\.net project\SkillBridge.DataAccess\bin\Release\net10.0\SkillBridge.DataAccess.pdb
+D:\Desktop\.net project\SkillBridge.DataAccess\bin\Release\net10.0\SkillBridge.Common.dll
+D:\Desktop\.net project\SkillBridge.DataAccess\bin\Release\net10.0\SkillBridge.Common.pdb
+D:\Desktop\.net project\SkillBridge.DataAccess\obj\Release\net10.0\SkillBridge.DataAccess.csproj.AssemblyReference.cache
+D:\Desktop\.net project\SkillBridge.DataAccess\obj\Release\net10.0\SkillBridge.DataAccess.GeneratedMSBuildEditorConfig.editorconfig
+D:\Desktop\.net project\SkillBridge.DataAccess\obj\Release\net10.0\SkillBridge.DataAccess.AssemblyInfoInputs.cache
+D:\Desktop\.net project\SkillBridge.DataAccess\obj\Release\net10.0\SkillBridge.DataAccess.AssemblyInfo.cs
+D:\Desktop\.net project\SkillBridge.DataAccess\obj\Release\net10.0\SkillBridge.DataAccess.csproj.CoreCompileInputs.cache
+D:\Desktop\.net project\SkillBridge.DataAccess\obj\Release\net10.0\SkillBri.E07EB98C.Up2Date
+D:\Desktop\.net project\SkillBridge.DataAccess\obj\Release\net10.0\SkillBridge.DataAccess.dll
+D:\Desktop\.net project\SkillBridge.DataAccess\obj\Release\net10.0\refint\SkillBridge.DataAccess.dll
+D:\Desktop\.net project\SkillBridge.DataAccess\obj\Release\net10.0\SkillBridge.DataAccess.pdb
+D:\Desktop\.net project\SkillBridge.DataAccess\obj\Release\net10.0\ref\SkillBridge.DataAccess.dll
