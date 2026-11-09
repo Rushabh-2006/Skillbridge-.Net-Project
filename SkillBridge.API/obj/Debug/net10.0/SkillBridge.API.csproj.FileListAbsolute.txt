@@ -1,0 +1,68 @@
+D:\Desktop\.net project\SkillBridge.API\bin\Debug\net10.0\appsettings.json
+D:\Desktop\.net project\SkillBridge.API\bin\Debug\net10.0\SkillBridge.API.staticwebassets.endpoints.json
+D:\Desktop\.net project\SkillBridge.API\bin\Debug\net10.0\SkillBridge.API.exe
+D:\Desktop\.net project\SkillBridge.API\bin\Debug\net10.0\SkillBridge.API.deps.json
+D:\Desktop\.net project\SkillBridge.API\bin\Debug\net10.0\SkillBridge.API.runtimeconfig.json
+D:\Desktop\.net project\SkillBridge.API\bin\Debug\net10.0\SkillBridge.API.dll
+D:\Desktop\.net project\SkillBridge.API\bin\Debug\net10.0\SkillBridge.API.pdb
+D:\Desktop\.net project\SkillBridge.API\bin\Debug\net10.0\MySqlConnector.dll
+D:\Desktop\.net project\SkillBridge.API\bin\Debug\net10.0\SkillBridge.Common.dll
+D:\Desktop\.net project\SkillBridge.API\bin\Debug\net10.0\SkillBridge.DataAccess.dll
+D:\Desktop\.net project\SkillBridge.API\bin\Debug\net10.0\SkillBridge.Common.pdb
+D:\Desktop\.net project\SkillBridge.API\bin\Debug\net10.0\SkillBridge.DataAccess.pdb
+D:\Desktop\.net project\SkillBridge.API\obj\Debug\net10.0\SkillBridge.API.csproj.AssemblyReference.cache
+D:\Desktop\.net project\SkillBridge.API\obj\Debug\net10.0\rpswa.dswa.cache.json
+D:\Desktop\.net project\SkillBridge.API\obj\Debug\net10.0\SkillBridge.API.GeneratedMSBuildEditorConfig.editorconfig
+D:\Desktop\.net project\SkillBridge.API\obj\Debug\net10.0\SkillBridge.API.AssemblyInfoInputs.cache
+D:\Desktop\.net project\SkillBridge.API\obj\Debug\net10.0\SkillBridge.API.AssemblyInfo.cs
+D:\Desktop\.net project\SkillBridge.API\obj\Debug\net10.0\SkillBridge.API.csproj.CoreCompileInputs.cache
+D:\Desktop\.net project\SkillBridge.API\obj\Debug\net10.0\SkillBridge.API.MvcApplicationPartsAssemblyInfo.cache
+D:\Desktop\.net project\SkillBridge.API\obj\Debug\net10.0\rjimswa.dswa.cache.json
+D:\Desktop\.net project\SkillBridge.API\obj\Debug\net10.0\rjsmrazor.dswa.cache.json
+D:\Desktop\.net project\SkillBridge.API\obj\Debug\net10.0\rjsmcshtml.dswa.cache.json
+D:\Desktop\.net project\SkillBridge.API\obj\Debug\net10.0\scopedcss\bundle\SkillBridge.API.styles.css
+D:\Desktop\.net project\SkillBridge.API\obj\Debug\net10.0\staticwebassets.build.json
+D:\Desktop\.net project\SkillBridge.API\obj\Debug\net10.0\staticwebassets.build.json.cache
+D:\Desktop\.net project\SkillBridge.API\obj\Debug\net10.0\staticwebassets.development.json
+D:\Desktop\.net project\SkillBridge.API\obj\Debug\net10.0\staticwebassets.build.endpoints.json
+D:\Desktop\.net project\SkillBridge.API\obj\Debug\net10.0\swae.build.ex.cache
+D:\Desktop\.net project\SkillBridge.API\obj\Debug\net10.0\SkillBri.5C6BC142.Up2Date
+D:\Desktop\.net project\SkillBridge.API\obj\Debug\net10.0\SkillBridge.API.dll
+D:\Desktop\.net project\SkillBridge.API\obj\Debug\net10.0\refint\SkillBridge.API.dll
+D:\Desktop\.net project\SkillBridge.API\obj\Debug\net10.0\SkillBridge.API.pdb
+D:\Desktop\.net project\SkillBridge.API\obj\Debug\net10.0\SkillBridge.API.genruntimeconfig.cache
+D:\Desktop\.net project\SkillBridge.API\obj\Debug\net10.0\ref\SkillBridge.API.dll
+D:\STUDY\SEMESTER 5\.NET\.net project\SkillBridge.API\bin\Debug\net10.0\appsettings.json
+D:\STUDY\SEMESTER 5\.NET\.net project\SkillBridge.API\bin\Debug\net10.0\SkillBridge.API.staticwebassets.endpoints.json
+D:\STUDY\SEMESTER 5\.NET\.net project\SkillBridge.API\bin\Debug\net10.0\SkillBridge.API.exe
+D:\STUDY\SEMESTER 5\.NET\.net project\SkillBridge.API\bin\Debug\net10.0\SkillBridge.API.deps.json
+D:\STUDY\SEMESTER 5\.NET\.net project\SkillBridge.API\bin\Debug\net10.0\SkillBridge.API.runtimeconfig.json
+D:\STUDY\SEMESTER 5\.NET\.net project\SkillBridge.API\bin\Debug\net10.0\SkillBridge.API.dll
+D:\STUDY\SEMESTER 5\.NET\.net project\SkillBridge.API\bin\Debug\net10.0\SkillBridge.API.pdb
+D:\STUDY\SEMESTER 5\.NET\.net project\SkillBridge.API\bin\Debug\net10.0\MySqlConnector.dll
+D:\STUDY\SEMESTER 5\.NET\.net project\SkillBridge.API\bin\Debug\net10.0\SkillBridge.Common.dll
+D:\STUDY\SEMESTER 5\.NET\.net project\SkillBridge.API\bin\Debug\net10.0\SkillBridge.DataAccess.dll
+D:\STUDY\SEMESTER 5\.NET\.net project\SkillBridge.API\bin\Debug\net10.0\SkillBridge.Common.pdb
+D:\STUDY\SEMESTER 5\.NET\.net project\SkillBridge.API\bin\Debug\net10.0\SkillBridge.DataAccess.pdb
+D:\STUDY\SEMESTER 5\.NET\.net project\SkillBridge.API\obj\Debug\net10.0\SkillBridge.API.csproj.AssemblyReference.cache
+D:\STUDY\SEMESTER 5\.NET\.net project\SkillBridge.API\obj\Debug\net10.0\rpswa.dswa.cache.json
+D:\STUDY\SEMESTER 5\.NET\.net project\SkillBridge.API\obj\Debug\net10.0\SkillBridge.API.GeneratedMSBuildEditorConfig.editorconfig
+D:\STUDY\SEMESTER 5\.NET\.net project\SkillBridge.API\obj\Debug\net10.0\SkillBridge.API.AssemblyInfoInputs.cache
+D:\STUDY\SEMESTER 5\.NET\.net project\SkillBridge.API\obj\Debug\net10.0\SkillBridge.API.AssemblyInfo.cs
+D:\STUDY\SEMESTER 5\.NET\.net project\SkillBridge.API\obj\Debug\net10.0\SkillBridge.API.csproj.CoreCompileInputs.cache
+D:\STUDY\SEMESTER 5\.NET\.net project\SkillBridge.API\obj\Debug\net10.0\SkillBridge.API.MvcApplicationPartsAssemblyInfo.cache
+D:\STUDY\SEMESTER 5\.NET\.net project\SkillBridge.API\obj\Debug\net10.0\rjimswa.dswa.cache.json
+D:\STUDY\SEMESTER 5\.NET\.net project\SkillBridge.API\obj\Debug\net10.0\rjsmrazor.dswa.cache.json
+D:\STUDY\SEMESTER 5\.NET\.net project\SkillBridge.API\obj\Debug\net10.0\rjsmcshtml.dswa.cache.json
+D:\STUDY\SEMESTER 5\.NET\.net project\SkillBridge.API\obj\Debug\net10.0\scopedcss\bundle\SkillBridge.API.styles.css
+D:\STUDY\SEMESTER 5\.NET\.net project\SkillBridge.API\obj\Debug\net10.0\staticwebassets.build.json
+D:\STUDY\SEMESTER 5\.NET\.net project\SkillBridge.API\obj\Debug\net10.0\staticwebassets.build.json.cache
+D:\STUDY\SEMESTER 5\.NET\.net project\SkillBridge.API\obj\Debug\net10.0\staticwebassets.development.json
+D:\STUDY\SEMESTER 5\.NET\.net project\SkillBridge.API\obj\Debug\net10.0\staticwebassets.build.endpoints.json
+D:\STUDY\SEMESTER 5\.NET\.net project\SkillBridge.API\obj\Debug\net10.0\swae.build.ex.cache
+D:\STUDY\SEMESTER 5\.NET\.net project\SkillBridge.API\obj\Debug\net10.0\SkillBri.5C6BC142.Up2Date
+D:\STUDY\SEMESTER 5\.NET\.net project\SkillBridge.API\obj\Debug\net10.0\SkillBridge.API.dll
+D:\STUDY\SEMESTER 5\.NET\.net project\SkillBridge.API\obj\Debug\net10.0\refint\SkillBridge.API.dll
+D:\STUDY\SEMESTER 5\.NET\.net project\SkillBridge.API\obj\Debug\net10.0\SkillBridge.API.pdb
+D:\STUDY\SEMESTER 5\.NET\.net project\SkillBridge.API\obj\Debug\net10.0\SkillBridge.API.genruntimeconfig.cache
+D:\STUDY\SEMESTER 5\.NET\.net project\SkillBridge.API\obj\Debug\net10.0\ref\SkillBridge.API.dll
