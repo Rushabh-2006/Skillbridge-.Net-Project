@@ -1,0 +1,11 @@
+D:\Desktop\.net project\SkillBridge.Common\bin\Release\net10.0\SkillBridge.Common.deps.json
+D:\Desktop\.net project\SkillBridge.Common\bin\Release\net10.0\SkillBridge.Common.dll
+D:\Desktop\.net project\SkillBridge.Common\bin\Release\net10.0\SkillBridge.Common.pdb
+D:\Desktop\.net project\SkillBridge.Common\obj\Release\net10.0\SkillBridge.Common.GeneratedMSBuildEditorConfig.editorconfig
+D:\Desktop\.net project\SkillBridge.Common\obj\Release\net10.0\SkillBridge.Common.AssemblyInfoInputs.cache
+D:\Desktop\.net project\SkillBridge.Common\obj\Release\net10.0\SkillBridge.Common.AssemblyInfo.cs
+D:\Desktop\.net project\SkillBridge.Common\obj\Release\net10.0\SkillBridge.Common.csproj.CoreCompileInputs.cache
+D:\Desktop\.net project\SkillBridge.Common\obj\Release\net10.0\SkillBridge.Common.dll
+D:\Desktop\.net project\SkillBridge.Common\obj\Release\net10.0\refint\SkillBridge.Common.dll
+D:\Desktop\.net project\SkillBridge.Common\obj\Release\net10.0\SkillBridge.Common.pdb
+D:\Desktop\.net project\SkillBridge.Common\obj\Release\net10.0\ref\SkillBridge.Common.dll

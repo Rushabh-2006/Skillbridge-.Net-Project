@@ -1,0 +1,22 @@
+D:\Desktop\.net project\SkillBridge.Common\bin\Debug\net10.0\SkillBridge.Common.deps.json
+D:\Desktop\.net project\SkillBridge.Common\bin\Debug\net10.0\SkillBridge.Common.dll
+D:\Desktop\.net project\SkillBridge.Common\bin\Debug\net10.0\SkillBridge.Common.pdb
+D:\Desktop\.net project\SkillBridge.Common\obj\Debug\net10.0\SkillBridge.Common.GeneratedMSBuildEditorConfig.editorconfig
+D:\Desktop\.net project\SkillBridge.Common\obj\Debug\net10.0\SkillBridge.Common.AssemblyInfoInputs.cache
+D:\Desktop\.net project\SkillBridge.Common\obj\Debug\net10.0\SkillBridge.Common.AssemblyInfo.cs
+D:\Desktop\.net project\SkillBridge.Common\obj\Debug\net10.0\SkillBridge.Common.csproj.CoreCompileInputs.cache
+D:\Desktop\.net project\SkillBridge.Common\obj\Debug\net10.0\SkillBridge.Common.dll
+D:\Desktop\.net project\SkillBridge.Common\obj\Debug\net10.0\refint\SkillBridge.Common.dll
+D:\Desktop\.net project\SkillBridge.Common\obj\Debug\net10.0\SkillBridge.Common.pdb
+D:\Desktop\.net project\SkillBridge.Common\obj\Debug\net10.0\ref\SkillBridge.Common.dll
+D:\STUDY\SEMESTER 5\.NET\.net project\SkillBridge.Common\bin\Debug\net10.0\SkillBridge.Common.deps.json
+D:\STUDY\SEMESTER 5\.NET\.net project\SkillBridge.Common\bin\Debug\net10.0\SkillBridge.Common.dll
+D:\STUDY\SEMESTER 5\.NET\.net project\SkillBridge.Common\bin\Debug\net10.0\SkillBridge.Common.pdb
+D:\STUDY\SEMESTER 5\.NET\.net project\SkillBridge.Common\obj\Debug\net10.0\SkillBridge.Common.GeneratedMSBuildEditorConfig.editorconfig
+D:\STUDY\SEMESTER 5\.NET\.net project\SkillBridge.Common\obj\Debug\net10.0\SkillBridge.Common.AssemblyInfoInputs.cache
+D:\STUDY\SEMESTER 5\.NET\.net project\SkillBridge.Common\obj\Debug\net10.0\SkillBridge.Common.AssemblyInfo.cs
+D:\STUDY\SEMESTER 5\.NET\.net project\SkillBridge.Common\obj\Debug\net10.0\SkillBridge.Common.csproj.CoreCompileInputs.cache
+D:\STUDY\SEMESTER 5\.NET\.net project\SkillBridge.Common\obj\Debug\net10.0\SkillBridge.Common.dll
+D:\STUDY\SEMESTER 5\.NET\.net project\SkillBridge.Common\obj\Debug\net10.0\refint\SkillBridge.Common.dll
+D:\STUDY\SEMESTER 5\.NET\.net project\SkillBridge.Common\obj\Debug\net10.0\SkillBridge.Common.pdb
+D:\STUDY\SEMESTER 5\.NET\.net project\SkillBridge.Common\obj\Debug\net10.0\ref\SkillBridge.Common.dll
