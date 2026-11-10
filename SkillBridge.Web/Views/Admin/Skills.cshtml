@@ -1,0 +1,42 @@
+@model List<SkillBridge.DataAccess.Entities.Skill>
+@{
+    ViewData["Title"] = "Master Skills - Admin - SkillBridge";
+    Layout = "_Layout";
+}
+
+<div class="dashboard-wrapper">
+    @await Html.PartialAsync("_SidebarAdmin")
+
+    <div class="dashboard-main">
+        <div class="dashboard-header">
+            <h1 class="dashboard-title">Master Skills Taxonomy</h1>
+        </div>
+
+        <div class="panel-card">
+            <div class="panel-title">System Skill Master List</div>
+            <div class="table-responsive">
+                <table class="sb-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Skill Name</th>
+                            <th>Category</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var s in Model)
+                        {
+                            <tr>
+                                <td>@s.Id</td>
+                                <td class="fw-bold text-white">@s.Name</td>
+                                <td><span class="badge bg-primary bg-opacity-20 text-primary">@s.Category</span></td>
+                                <td class="text-secondary small">@s.Description</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

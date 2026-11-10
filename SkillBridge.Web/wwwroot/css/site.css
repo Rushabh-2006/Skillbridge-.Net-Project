@@ -1,0 +1,125 @@
+@import url('tokens.css');
+
+body {
+  font-family: var(--sb-font-family);
+  background-color: var(--sb-bg-light);
+  color: var(--sb-text-dark);
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Public SaaS Hero Section */
+.hero-section {
+  background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+  color: #FFFFFF;
+  padding: 100px 0 80px 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-headline {
+  font-size: 3.5rem;
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  background: linear-gradient(180deg, #FFFFFF 0%, #94A3B8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 20px;
+}
+
+.hero-subhead {
+  font-size: 1.25rem;
+  color: var(--sb-text-muted);
+  max-width: 680px;
+  line-height: 1.6;
+  margin-bottom: 35px;
+}
+
+.hero-stats-row {
+  display: flex;
+  gap: 40px;
+  margin-top: 50px;
+  padding-top: 30px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.hero-stat-number {
+  font-size: 2.25rem;
+  font-weight: 800;
+  font-feature-settings: "tnum";
+  color: #FFFFFF;
+}
+
+.hero-stat-label {
+  font-size: 0.875rem;
+  color: var(--sb-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Hero Floating Mockup Card */
+.hero-mockup-card {
+  background: var(--sb-bg-sidebar);
+  border: 1px solid var(--sb-card-border);
+  border-radius: var(--sb-radius-lg);
+  padding: 24px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+  transform: perspective(1000px) rotateY(-5deg) rotateX(3deg);
+  transition: transform 0.3s ease;
+}
+
+.hero-mockup-card:hover {
+  transform: perspective(1000px) rotateY(0deg) rotateX(0deg);
+}
+
+/* Feature Deep-Dive Section */
+.feature-row {
+  padding: 80px 0;
+  border-bottom: 1px solid #E2E8F0;
+}
+
+.feature-number {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--sb-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 8px;
+}
+
+.feature-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
+/* Verified Hash Monospace Badge */
+.verified-hash-badge {
+  font-family: var(--sb-font-mono);
+  background: rgba(16, 185, 129, 0.1);
+  color: var(--sb-success);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  padding: 4px 10px;
+  border-radius: var(--sb-radius-sm);
+  font-size: 0.8rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Status & Match Pill Badges */
+.badge-pill {
+  padding: 4px 12px;
+  border-radius: var(--sb-radius-full);
+  font-size: 0.75rem;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.badge-ready { background: var(--sb-success-bg); color: var(--sb-success); }
+.badge-warning { background: var(--sb-warning-bg); color: var(--sb-warning); }
+.badge-danger { background: var(--sb-danger-bg); color: var(--sb-danger); }

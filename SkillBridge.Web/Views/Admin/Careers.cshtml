@@ -1,0 +1,40 @@
+@model List<SkillBridge.DataAccess.Entities.CareerGoal>
+@{
+    ViewData["Title"] = "Career Paths - Admin - SkillBridge";
+    Layout = "_Layout";
+}
+
+<div class="dashboard-wrapper">
+    @await Html.PartialAsync("_SidebarAdmin")
+
+    <div class="dashboard-main">
+        <div class="dashboard-header">
+            <h1 class="dashboard-title">Career Paths & Required Skill Configurations</h1>
+        </div>
+
+        <div class="panel-card">
+            <div class="panel-title">Active Platform Career Goals</div>
+            <div class="table-responsive">
+                <table class="sb-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Title</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var c in Model)
+                        {
+                            <tr>
+                                <td>@c.Id</td>
+                                <td class="fw-bold text-white fs-6">@c.Title</td>
+                                <td class="text-secondary small">@c.Description</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

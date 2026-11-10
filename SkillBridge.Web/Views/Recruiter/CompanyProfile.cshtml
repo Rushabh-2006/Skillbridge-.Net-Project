@@ -1,0 +1,81 @@
+@model SkillBridge.DataAccess.Entities.Company
+@{
+    ViewData["Title"] = "Company Profile - SkillBridge";
+    Layout = "_Layout";
+    var user = ViewBag.User as SkillBridge.DataAccess.Entities.User;
+    var badges = ViewBag.Badges as SkillBridge.DataAccess.Entities.VerificationBadge;
+}
+
+<div class="dashboard-wrapper">
+    @await Html.PartialAsync("_SidebarRecruiter")
+
+    <div class="dashboard-main">
+        <div class="dashboard-header">
+            <h1 class="dashboard-title">Company Profile & Verification Badges</h1>
+        </div>
+
+        <div class="panel-card mb-4">
+            <div class="panel-title"><i class="bi bi-shield-check text-success me-2"></i>Recruiter Verification Badges</div>
+            <div class="row g-3">
+                <div class="col-md-3">
+                    <div class="p-3 border border-secondary rounded-2 bg-dark d-flex align-items-center justify-content-between">
+                        <div>
+                            <div class="small text-secondary">Work Email</div>
+                            <div class="fw-bold">@(user?.Email ?? "Not Provided")</div>
+                        </div>
+                        <span class="badge @(badges?.IsEmailVerified == true ? "bg-success" : "bg-secondary")">@(badges?.IsEmailVerified == true ? "Verified ✓" : "Unverified")</span>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="p-3 border border-secondary rounded-2 bg-dark d-flex align-items-center justify-content-between">
+                        <div>
+                            <div class="small text-secondary">Company Phone</div>
+                            <div class="fw-bold">@(user?.PhoneNumber ?? "Not Provided")</div>
+                        </div>
+                        <span class="badge @(badges?.IsPhoneVerified == true ? "bg-success" : "bg-secondary")">@(badges?.IsPhoneVerified == true ? "Verified ✓" : "Unverified")</span>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="p-3 border border-secondary rounded-2 bg-dark d-flex align-items-center justify-content-between">
+                        <div>
+                            <div class="small text-secondary">LinkedIn Profile</div>
+                            <div class="fw-bold">@(user?.Name ?? "Corporate")</div>
+                        </div>
+                        <span class="badge @(badges?.IsLinkedInVerified == true ? "bg-success" : "bg-secondary")">@(badges?.IsLinkedInVerified == true ? "Verified ✓" : "Unverified")</span>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="p-3 border border-secondary rounded-2 bg-dark d-flex align-items-center justify-content-between">
+                        <div>
+                            <div class="small text-secondary">Corporate Domain</div>
+                            <div class="fw-bold">@(Model?.Website != null ? new Uri(Model.Website.StartsWith("http") ? Model.Website : "https://" + Model.Website).Host : (user?.Email?.Split('@').LastOrDefault() ?? "corporate.io"))</div>
+                        </div>
+                        <span class="badge bg-success">Verified ✓</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel-card">
+            <div class="panel-title">Company Profile Details</div>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label class="form-label text-secondary small fw-bold">Company Name</label>
+                    <input type="text" class="form-control bg-dark text-white border-secondary" value="@(Model?.CompanyName ?? user?.Name ?? "Company")" readonly />
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label text-secondary small fw-bold">Industry</label>
+                    <input type="text" class="form-control bg-dark text-white border-secondary" value="@(Model?.Industry ?? "Enterprise Cloud & Software Systems")" readonly />
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label text-secondary small fw-bold">Headquarters Location</label>
+                    <input type="text" class="form-control bg-dark text-white border-secondary" value="@(Model?.Location ?? "San Francisco, CA & Remote")" readonly />
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label text-secondary small fw-bold">Corporate Website</label>
+                    <input type="text" class="form-control bg-dark text-white border-secondary" value="@(Model?.Website ?? "https://nexuscloud.io")" readonly />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

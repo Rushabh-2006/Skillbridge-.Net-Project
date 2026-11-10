@@ -1,0 +1,66 @@
+@model List<SkillBridge.DataAccess.Entities.Application>
+@{
+    ViewData["Title"] = "Recruiter Candidate Evaluation - SkillBridge";
+    Layout = "_Layout";
+}
+
+<div class="dashboard-wrapper">
+    @await Html.PartialAsync("_SidebarRecruiter")
+
+    <div class="dashboard-main">
+        <div class="dashboard-header">
+            <div>
+                <h1 class="dashboard-title">Candidate Evaluation & Manual Override</h1>
+                <div class="text-secondary small">System Auto-Decision Rule: Match % ≥ Cutoff → Selected, else Rejected</div>
+            </div>
+        </div>
+
+        @if (TempData["Success"] != null)
+        {
+            <div class="alert alert-success py-2">@TempData["Success"]</div>
+        }
+
+        <div class="panel-card">
+            <div class="panel-title">Applicant Decision Matrix</div>
+            <div class="table-responsive">
+                <table class="sb-table">
+                    <thead>
+                        <tr>
+                            <th>Candidate</th>
+                            <th>Role Applied</th>
+                            <th>Skill Match %</th>
+                            <th>Auto Decision</th>
+                            <th>Final Decision</th>
+                            <th>Manual Recruiter Override</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var app in Model)
+                        {
+                            <tr>
+                                <td class="fw-bold">
+                                    <div>@app.StudentName</div>
+                                    <div class="text-secondary font-xs">@app.StudentEmail</div>
+                                </td>
+                                <td>@app.InternshipTitle</td>
+                                <td>@await Html.PartialAsync("_MatchBadge", (app.MatchPercentage, app.MinimumMatchPercentage))</td>
+                                <td><span class="badge bg-secondary font-xs">@app.AutoDecision</span></td>
+                                <td>@await Html.PartialAsync("_StatusBadge", app.FinalDecision)</td>
+                                <td>
+                                    <form method="post" action="/Recruiter/OverrideDecision" class="d-flex gap-2">
+                                        <input type="hidden" name="applicationId" value="@app.Id" />
+                                        <select name="decision" class="form-select form-select-sm bg-dark text-white border-secondary">
+                                            <option value="Selected" selected="@(app.FinalDecision == "Selected" ? "selected" : null)">Selected</option>
+                                            <option value="Rejected" selected="@(app.FinalDecision == "Rejected" ? "selected" : null)">Rejected</option>
+                                        </select>
+                                        <button type="submit" class="btn btn-outline-warning btn-sm font-xs">Save</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

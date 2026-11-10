@@ -1,0 +1,41 @@
+/* SkillBridge UI Design System Tokens */
+:root {
+  /* Color Palette - Enterprise Dark Navy + Slate + Emerald */
+  --sb-bg-dark: #0F172A;
+  --sb-bg-sidebar: #1E293B;
+  --sb-bg-panel: #1E293B;
+  --sb-bg-panel-hover: #334155;
+  --sb-bg-light: #F8FAFC;
+  --sb-card-border: #334155;
+  
+  --sb-text-main: #F8FAFC;
+  --sb-text-muted: #94A3B8;
+  --sb-text-dark: #0F172A;
+  --sb-text-light-muted: #64748B;
+  
+  /* Brand Accent & Status Colors */
+  --sb-primary: #3B82F6;
+  --sb-primary-hover: #2563EB;
+  --sb-success: #10B981;
+  --sb-success-bg: rgba(16, 185, 129, 0.15);
+  --sb-warning: #F59E0B;
+  --sb-warning-bg: rgba(245, 158, 11, 0.15);
+  --sb-danger: #EF4444;
+  --sb-danger-bg: rgba(239, 68, 68, 0.15);
+  --sb-purple: #8B5CF6;
+  
+  /* Typography */
+  --sb-font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --sb-font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+  
+  /* Spacing & Radius */
+  --sb-radius-sm: 6px;
+  --sb-radius-md: 10px;
+  --sb-radius-lg: 16px;
+  --sb-radius-full: 9999px;
+  
+  /* Shadows */
+  --sb-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --sb-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+  --sb-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
+}

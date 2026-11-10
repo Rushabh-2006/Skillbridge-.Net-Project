@@ -1,0 +1,55 @@
+@model List<SkillBridge.DataAccess.Entities.Internship>
+@{
+    ViewData["Title"] = "Internship Matching - SkillBridge";
+    Layout = "_Layout";
+}
+
+<div class="dashboard-wrapper">
+    @await Html.PartialAsync("_SidebarStudent")
+
+    <div class="dashboard-main">
+        <div class="dashboard-header">
+            <h1 class="dashboard-title">Internship Matching Engine</h1>
+        </div>
+
+        @if (TempData["Success"] != null)
+        {
+            <div class="alert alert-success py-2">@TempData["Success"]</div>
+        }
+
+        <div class="row g-4">
+            @foreach (var item in Model)
+            {
+                <div class="col-md-6">
+                    <div class="panel-card h-100 d-flex flex-column justify-content-between">
+                        <div>
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <h3 class="fw-bold text-white fs-4 mb-0">@item.Title</h3>
+                                @await Html.PartialAsync("_MatchBadge", (item.CandidateMatchPercentage, item.MinimumMatchPercentage))
+                            </div>
+                            <div class="text-primary fw-bold mb-2">@item.CompanyName • <span class="text-secondary font-xs">@item.Location</span></div>
+                            <div class="badge bg-dark border border-secondary text-white mb-3">Stipend: @(item.Stipend ?? "Unpaid")</div>
+                            <p class="text-secondary small mb-3">@item.Description</p>
+                        </div>
+
+                        <div class="pt-3 border-top border-secondary d-flex justify-content-between align-items-center">
+                            <span class="small text-muted">Min Threshold: <strong class="text-white">@item.MinimumMatchPercentage%</strong></span>
+                            @if (item.CandidateMatchPercentage >= item.MinimumMatchPercentage)
+                            {
+                                <a href="/Student/Apply?internshipId=@item.Id" class="btn btn-primary btn-sm px-4 fw-bold">
+                                    Apply Now <i class="bi bi-send ms-1"></i>
+                                </a>
+                            }
+                            else
+                            {
+                                <button type="button" class="btn btn-secondary btn-sm px-3 opacity-75" disabled title="Requires at least @item.MinimumMatchPercentage% skill match to apply">
+                                    <i class="bi bi-lock-fill me-1"></i> Match Threshold Not Met
+                                </button>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

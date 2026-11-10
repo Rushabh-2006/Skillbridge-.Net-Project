@@ -1,0 +1,81 @@
+@{
+    ViewData["Title"] = "Faculty Dashboard - SkillBridge";
+    Layout = "_Layout";
+    var analytics = ViewBag.Analytics as SkillBridge.DataAccess.Repositories.FacultyAnalyticsSummary;
+    var pendingCerts = ViewBag.PendingCerts as List<SkillBridge.DataAccess.Entities.Certification>;
+}
+
+<div class="dashboard-wrapper">
+    @await Html.PartialAsync("_SidebarFaculty")
+
+    <div class="dashboard-main">
+        <div class="dashboard-header">
+            <div>
+                <h1 class="dashboard-title">Faculty Placement Analytics</h1>
+                <div class="text-secondary small">Department of Computer Science & Software Engineering</div>
+            </div>
+            <a href="/Faculty/CertificationReview" class="btn btn-outline-warning btn-sm"><i class="bi bi-patch-check"></i> Pending Certs (@(pendingCerts?.Count ?? 0))</a>
+        </div>
+
+        <!-- 4 Stat Cards (Section 4.9) -->
+        <div class="stat-cards-grid">
+            @await Html.PartialAsync("_StatCard", (analytics?.TotalStudents.ToString() ?? "0", "Total Students Tracked", "All Students", true))
+            @await Html.PartialAsync("_StatCard", (analytics?.PlacementReadyCount.ToString() ?? "0", "Placement Ready (≥70%)", "Job Ready", true))
+            @await Html.PartialAsync("_StatCard", (analytics?.NeedsImprovementCount.ToString() ?? "0", "Needs Improvement (40-69%)", "Intervention Needed", false))
+            @await Html.PartialAsync("_StatCard", (analytics?.NotStartedCount.ToString() ?? "0", "Not Started (<40%)", "Action Required", false))
+        </div>
+
+        <!-- Top Missing Skills Bar Chart & Pending Reviews -->
+        <div class="row g-4 mb-4">
+            <div class="col-lg-7">
+                <div class="panel-card h-100">
+                    <div class="panel-title"><i class="bi bi-bar-chart-line-fill text-primary me-2"></i>Top Missing Skills Across All Students</div>
+                    <p class="text-secondary small">Aggregated missing skills informing institutional workshop planning (N students format).</p>
+                    <canvas id="chartTopMissingSkills" style="max-height: 280px;"></canvas>
+                </div>
+            </div>
+
+            <div class="col-lg-5">
+                <div class="panel-card h-100">
+                    <div class="panel-title"><i class="bi bi-patch-check-fill text-warning me-2"></i>Pending Certification Verification</div>
+                    <div class="table-responsive">
+                        <table class="sb-table">
+                            <thead>
+                                <tr>
+                                    <th>Student</th>
+                                    <th>Certification</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (pendingCerts != null)
+                                {
+                                    foreach (var c in pendingCerts)
+                                    {
+                                        <tr>
+                                            <td class="fw-bold">@c.StudentName</td>
+                                            <td class="text-secondary">@c.Title</td>
+                                            <td>
+                                                <a href="/Faculty/CertificationReview" class="btn btn-primary btn-sm font-xs">Review</a>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const labels = [@Html.Raw(string.Join(",", analytics?.TopMissingSkills.Select(s => $"\"{s.SkillName}\"") ?? new string[0]))];
+            const data = [@string.Join(",", analytics?.TopMissingSkills.Select(s => s.StudentCount) ?? new int[0])];
+            SkillBridgeCharts.renderMissingSkillsChart("chartTopMissingSkills", labels, data);
+        });
+    </script>
+}

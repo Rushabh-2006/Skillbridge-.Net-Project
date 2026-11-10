@@ -1,0 +1,20 @@
+@model string
+
+@{
+    string badgeClass = Model switch
+    {
+        "Selected" => "badge-ready",
+        "Verified" => "badge-ready",
+        "VERIFIED" => "badge-ready",
+        "Active" => "badge-ready",
+        "Pending" => "badge-warning",
+        "Requested" => "badge-warning",
+        "UNVERIFIED" => "badge-warning",
+        "Rejected" => "badge-danger",
+        _ => "badge-warning"
+    };
+}
+
+<span class="badge-pill @badgeClass">
+    <i class="bi bi-circle-fill font-xs"></i> @Model
+</span>

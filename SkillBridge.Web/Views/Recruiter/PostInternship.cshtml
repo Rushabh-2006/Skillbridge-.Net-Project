@@ -1,0 +1,62 @@
+@{
+    ViewData["Title"] = "Post Internship - SkillBridge";
+    Layout = "_Layout";
+    var masterSkills = ViewBag.MasterSkills as List<SkillBridge.DataAccess.Entities.Skill>;
+}
+
+<div class="dashboard-wrapper">
+    @await Html.PartialAsync("_SidebarRecruiter")
+
+    <div class="dashboard-main">
+        <div class="dashboard-header">
+            <h1 class="dashboard-title">Post New Internship</h1>
+        </div>
+
+        <div class="panel-card">
+            <div class="panel-title">Internship Details & Skill Match Thresholds</div>
+            <form method="post" action="/Recruiter/PostInternship">
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label text-secondary small fw-bold">Internship Title</label>
+                        <input type="text" name="title" class="form-control bg-dark text-white border-secondary" placeholder="e.g. .NET Developer Intern" required />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label text-secondary small fw-bold">Company Name</label>
+                        <input type="text" name="companyName" class="form-control bg-dark text-white border-secondary" value="Nexus Cloud Technologies" required />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label text-secondary small fw-bold">Location</label>
+                        <input type="text" name="location" class="form-control bg-dark text-white border-secondary" placeholder="e.g. Seattle, WA / Hybrid Remote" required />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label text-secondary small fw-bold">Stipend / Compensation</label>
+                        <input type="text" name="stipend" class="form-control bg-dark text-white border-secondary" placeholder="e.g. $3,500 / month" />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label text-secondary small fw-bold">Minimum Skill Match % (Auto Selected Cutoff)</label>
+                        <input type="number" name="minimumMatchPercentage" class="form-control bg-dark text-white border-secondary" value="65" min="1" max="100" required />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label text-secondary small fw-bold">Required Skills (Hold Ctrl to select multiple)</label>
+                        <select name="requiredSkillIds" class="form-select bg-dark text-white border-secondary" multiple style="height: 120px;" required>
+                            @if (masterSkills != null)
+                            {
+                                foreach (var s in masterSkills)
+                                {
+                                    <option value="@s.Id">@s.Name (@s.Category)</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label text-secondary small fw-bold">Job Description</label>
+                        <textarea name="description" class="form-control bg-dark text-white border-secondary" rows="3" placeholder="Describe the internship duties and expectations..."></textarea>
+                    </div>
+                    <div class="col-12 mt-4">
+                        <button type="submit" class="btn btn-primary px-4"><i class="bi bi-briefcase me-2"></i>Publish Internship Posting</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

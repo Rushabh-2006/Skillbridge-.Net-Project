@@ -1,0 +1,103 @@
+@model List<SkillBridge.DataAccess.Entities.Certification>
+@{
+    ViewData["Title"] = "Certifications - SkillBridge";
+    Layout = "_Layout";
+    var masterSkills = ViewBag.MasterSkills as List<SkillBridge.DataAccess.Entities.Skill>;
+}
+
+<div class="dashboard-wrapper">
+    @await Html.PartialAsync("_SidebarStudent")
+
+    <div class="dashboard-main">
+        <div class="dashboard-header">
+            <h1 class="dashboard-title">Certification Upload & Verification</h1>
+        </div>
+
+        @if (TempData["Success"] != null)
+        {
+            <div class="alert alert-success py-2">@TempData["Success"]</div>
+        }
+
+        <!-- Upload Form -->
+        <div class="panel-card mb-4">
+            <div class="panel-title">Upload New Credential</div>
+            <form method="post" action="/Student/UploadCert" class="row g-3">
+                <div class="col-md-6">
+                    <label class="form-label text-secondary small fw-bold">Certificate Title</label>
+                    <input type="text" name="title" class="form-control bg-dark text-white border-secondary" placeholder="e.g. AWS Certified Developer" required />
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label text-secondary small fw-bold">Issuing Organization</label>
+                    <input type="text" name="issuingOrganization" class="form-control bg-dark text-white border-secondary" placeholder="e.g. Amazon Web Services" required />
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label text-secondary small fw-bold">Issue Date</label>
+                    <input type="date" name="issueDate" class="form-control bg-dark text-white border-secondary" required />
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label text-secondary small fw-bold">Linked Skill</label>
+                    <select name="linkedSkillId" class="form-select bg-dark text-white border-secondary" required>
+                        @if (masterSkills != null)
+                        {
+                            foreach (var s in masterSkills)
+                            {
+                                <option value="@s.Id">@s.Name</option>
+                            }
+                        }
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label text-secondary small fw-bold">File Path / File URL</label>
+                    <input type="text" name="filePath" class="form-control bg-dark text-white border-secondary" value="/uploads/sample_cert.pdf" required />
+                </div>
+                <div class="col-12 mt-3">
+                    <button type="submit" class="btn btn-primary px-4"><i class="bi bi-cloud-upload me-2"></i>Upload Certification</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Certifications Table with SHA-256 Hash Display -->
+        <div class="panel-card">
+            <div class="panel-title">Uploaded Certifications</div>
+            <div class="table-responsive">
+                <table class="sb-table">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Issuing Org</th>
+                            <th>Issue Date</th>
+                            <th>Linked Skill</th>
+                            <th>Verification Status</th>
+                            <th>SHA-256 Hash</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var c in Model)
+                        {
+                            <tr>
+                                <td class="fw-bold text-white">@c.Title</td>
+                                <td class="text-white">@c.IssuingOrganization</td>
+                                <td class="text-white">@c.IssueDate.ToString("yyyy-MM-dd")</td>
+                                <td><span class="badge bg-primary text-white">@c.LinkedSkillName</span></td>
+                                <td>@await Html.PartialAsync("_StatusBadge", c.VerificationStatus)</td>
+                                <td>
+                                    <div class="d-flex align-items-center gap-2">
+                                        <code class="cert-hash-badge text-truncate" style="max-width: 220px;" title="@c.VerificationHash">
+                                            @(string.IsNullOrEmpty(c.VerificationHash) ? "Pending Generation" : c.VerificationHash)
+                                        </code>
+                                        @if (!string.IsNullOrEmpty(c.VerificationHash))
+                                        {
+                                            <button type="button" class="btn btn-sm btn-outline-info py-0 px-2" onclick="navigator.clipboard.writeText('@c.VerificationHash'); alert('Hash copied to clipboard!');" title="Copy Hash">
+                                                <i class="bi bi-clipboard"></i>
+                                            </button>
+                                        }
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,19 @@
+@{
+    ViewData["Title"] = "Project Registry - Admin - SkillBridge";
+    Layout = "_Layout";
+}
+
+<div class="dashboard-wrapper">
+    @await Html.PartialAsync("_SidebarAdmin")
+
+    <div class="dashboard-main">
+        <div class="dashboard-header">
+            <h1 class="dashboard-title">Project Registry Management</h1>
+        </div>
+
+        <div class="panel-card">
+            <div class="panel-title">Master Project Recommendations</div>
+            <p class="text-secondary">Master project challenges configured for beginner, intermediate, advanced, and expert levels.</p>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,278 @@
+@model SkillBridge.DataAccess.Repositories.FacultyAnalyticsSummary
+@{
+    ViewData["Title"] = "Skill Analytics - SkillBridge";
+    Layout = "_Layout";
+}
+
+<!-- Schedule Workshop Modal -->
+<div class="modal fade" id="scheduleWorkshopModal" tabindex="-1" aria-labelledby="scheduleWorkshopModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="scheduleWorkshopModalLabel">
+                    <i class="bi bi-calendar-event text-primary me-2"></i>Schedule Workshop
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p class="text-secondary small mb-3">Scheduling a workshop for: <strong id="workshopSkillName" class="text-white"></strong></p>
+                <div class="mb-3">
+                    <label class="form-label text-secondary small">Workshop Title</label>
+                    <input type="text" id="workshopTitle" class="form-control" placeholder="e.g. Intensive React.js Bootcamp" />
+                </div>
+                <div class="row g-3">
+                    <div class="col-6">
+                        <label class="form-label text-secondary small">Date</label>
+                        <input type="date" id="workshopDate" class="form-control" />
+                    </div>
+                    <div class="col-6">
+                        <label class="form-label text-secondary small">Time</label>
+                        <input type="time" id="workshopTime" class="form-control" />
+                    </div>
+                </div>
+                <div class="mt-3">
+                    <label class="form-label text-secondary small">Venue / Platform</label>
+                    <input type="text" id="workshopVenue" class="form-control" placeholder="e.g. Room 204, Lab Block B or Google Meet" />
+                </div>
+                <div class="mt-3">
+                    <label class="form-label text-secondary small">Notes (optional)</label>
+                    <textarea id="workshopNotes" class="form-control" rows="2" placeholder="Any additional notes..."></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="confirmScheduleWorkshop()">
+                    <i class="bi bi-calendar-check me-1"></i>Confirm Schedule
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Workshop Confirmed Toast -->
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 9999;">
+    <div id="workshopToast" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                <i class="bi bi-calendar-check-fill me-2"></i><span id="workshopToastMsg">Workshop scheduled successfully!</span>
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+</div>
+
+<div class="dashboard-wrapper">
+    @await Html.PartialAsync("_SidebarFaculty")
+
+    <div class="dashboard-main">
+        <div class="dashboard-header">
+            <div>
+                <h1 class="dashboard-title">Institutional Skill Gap Analytics</h1>
+                <div class="text-secondary small">Aggregate view of top missing skills across all students</div>
+            </div>
+            <span class="badge-pill-info">
+                <i class="bi bi-people-fill me-1"></i>@Model.TotalStudents Students Tracked
+            </span>
+        </div>
+
+        <div class="panel-card mb-4">
+            <div class="panel-title">
+                <span><i class="bi bi-exclamation-triangle-fill text-warning me-2"></i>Top Missing Skills Across Students</span>
+                <span class="badge-workshop-planning">
+                    <i class="bi bi-tools me-1"></i>Requires Workshop Planning
+                </span>
+            </div>
+            <div class="table-responsive">
+                <table class="sb-table" id="skillGapsTable">
+                    <thead>
+                        <tr>
+                            <th style="width:40%">Skill Name</th>
+                            <th style="width:30%">Lacking Students Count</th>
+                            <th style="width:30%">Action Plan</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.TopMissingSkills)
+                        {
+                            <tr>
+                                <td>
+                                    <div class="d-flex align-items-center gap-2">
+                                        <div class="skill-dot"></div>
+                                        <span class="fw-semibold text-white">@item.SkillName</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="d-flex align-items-center gap-2">
+                                        <span class="student-count-badge">@item.StudentCount</span>
+                                        <span class="text-secondary small">students lacking</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <button class="btn btn-sm btn-schedule-workshop"
+                                            onclick="openScheduleModal('@item.SkillName', @item.StudentCount)">
+                                        <i class="bi bi-calendar-event me-1"></i>Schedule Workshop
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Summary bar -->
+        <div class="panel-card">
+            <div class="panel-title"><i class="bi bi-bar-chart-fill text-primary me-2"></i>Skill Gap Visual Overview</div>
+            <canvas id="skillGapBarChart" style="max-height:260px;"></canvas>
+        </div>
+    </div>
+</div>
+
+<style>
+    .badge-pill-info {
+        display: inline-flex;
+        align-items: center;
+        background: rgba(59,130,246,0.15);
+        color: #60A5FA;
+        border: 1px solid rgba(59,130,246,0.3);
+        padding: 6px 14px;
+        border-radius: 9999px;
+        font-size: 0.85rem;
+        font-weight: 600;
+    }
+
+    .skill-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #3B82F6, #8B5CF6);
+        flex-shrink: 0;
+    }
+
+    .badge-workshop-planning {
+        display: inline-flex;
+        align-items: center;
+        background: rgba(245, 158, 11, 0.18) !important;
+        color: #FCD34D !important;
+        border: 1px solid rgba(245, 158, 11, 0.45);
+        padding: 5px 12px;
+        border-radius: 6px;
+        font-size: 0.82rem;
+        font-weight: 600;
+        letter-spacing: 0.02em;
+    }
+
+    .student-count-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 42px;
+        padding: 4px 10px;
+        background: rgba(239, 68, 68, 0.22) !important;
+        color: #FCA5A5 !important;
+        border: 1px solid rgba(239, 68, 68, 0.45);
+        border-radius: 6px;
+        font-size: 0.95rem;
+        font-weight: 800;
+        font-variant-numeric: tabular-nums;
+        text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+    }
+
+    .btn-schedule-workshop {
+        background: rgba(59,130,246,0.12);
+        color: #60A5FA;
+        border: 1px solid rgba(59,130,246,0.3);
+        border-radius: 6px;
+        font-size: 0.82rem;
+        font-weight: 500;
+        padding: 5px 12px;
+        transition: all 0.2s ease;
+        white-space: nowrap;
+    }
+
+    .btn-schedule-workshop:hover {
+        background: rgba(59,130,246,0.25);
+        color: #93C5FD;
+        border-color: rgba(59,130,246,0.55);
+        transform: translateY(-1px);
+    }
+</style>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        var skillLabels = [@Html.Raw(string.Join(",", Model.TopMissingSkills.Select(s => $"\"{s.SkillName}\"")))];
+        var skillCounts = [@string.Join(",", Model.TopMissingSkills.Select(s => s.StudentCount))];
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const ctx = document.getElementById('skillGapBarChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: skillLabels,
+                    datasets: [{
+                        label: 'Students Lacking Skill',
+                        data: skillCounts,
+                        backgroundColor: 'rgba(59,130,246,0.25)',
+                        borderColor: 'rgba(59,130,246,0.8)',
+                        borderWidth: 2,
+                        borderRadius: 6,
+                        hoverBackgroundColor: 'rgba(139,92,246,0.35)',
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: ctx => ` ${ctx.parsed.y} students lacking`
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            ticks: { color: '#94A3B8', font: { size: 12 } },
+                            grid: { color: 'rgba(51,65,85,0.5)' }
+                        },
+                        y: {
+                            beginAtZero: true,
+                            ticks: { color: '#94A3B8', precision: 0 },
+                            grid: { color: 'rgba(51,65,85,0.5)' }
+                        }
+                    }
+                }
+            });
+        });
+
+        function openScheduleModal(skillName, count) {
+            document.getElementById('workshopSkillName').textContent = skillName + ' (' + count + ' students affected)';
+            document.getElementById('workshopTitle').value = 'Workshop: ' + skillName;
+            var modal = new bootstrap.Modal(document.getElementById('scheduleWorkshopModal'));
+            modal.show();
+        }
+
+        function confirmScheduleWorkshop() {
+            var title = document.getElementById('workshopTitle').value.trim();
+            var date = document.getElementById('workshopDate').value;
+            var time = document.getElementById('workshopTime').value;
+            var venue = document.getElementById('workshopVenue').value.trim();
+
+            if (!title || !date || !venue) {
+                alert('Please fill in Workshop Title, Date, and Venue.');
+                return;
+            }
+
+            // Close modal
+            bootstrap.Modal.getInstance(document.getElementById('scheduleWorkshopModal')).hide();
+
+            // Show toast
+            var skillName = document.getElementById('workshopSkillName').textContent;
+            document.getElementById('workshopToastMsg').textContent =
+                '✅ Workshop "' + title + '" scheduled for ' + date + ' at ' + (time || 'TBD') + ' — ' + venue;
+            var toastEl = document.getElementById('workshopToast');
+            var toast = new bootstrap.Toast(toastEl, { delay: 5000 });
+            toast.show();
+        }
+    </script>
+}

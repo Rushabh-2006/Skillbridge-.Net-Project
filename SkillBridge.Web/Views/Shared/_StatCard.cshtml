@@ -1,0 +1,12 @@
+@model (string Value, string Label, string? DeltaText, bool IsPositive)
+
+<div class="stat-card">
+    <div class="stat-value">@Model.Value</div>
+    <div class="stat-label">@Model.Label</div>
+    @if (!string.IsNullOrEmpty(Model.DeltaText))
+    {
+        <div class="stat-delta @(Model.IsPositive ? "delta-positive" : "delta-negative")">
+            <i class="bi @(Model.IsPositive ? "bi-arrow-up-right" : "bi-arrow-down-right")"></i> @Model.DeltaText
+        </div>
+    }
+</div>

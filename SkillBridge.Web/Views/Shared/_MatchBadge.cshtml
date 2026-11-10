@@ -1,0 +1,10 @@
+@model (int MatchPercentage, int MinimumPercentage)
+
+@{
+    bool isQualified = Model.MatchPercentage >= Model.MinimumPercentage;
+    string bgClass = isQualified ? "badge-ready" : "badge-warning";
+}
+
+<span class="badge-pill @bgClass">
+    <i class="bi @(isQualified ? "bi-check-lg" : "bi-exclamation-triangle")"></i> @Model.MatchPercentage% Match
+</span>

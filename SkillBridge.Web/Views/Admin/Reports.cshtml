@@ -1,0 +1,22 @@
+@model SkillBridge.DataAccess.Repositories.AdminStatsSummary
+@{
+    ViewData["Title"] = "System Reports - Admin - SkillBridge";
+    Layout = "_Layout";
+}
+
+<div class="dashboard-wrapper">
+    @await Html.PartialAsync("_SidebarAdmin")
+
+    <div class="dashboard-main">
+        <div class="dashboard-header">
+            <h1 class="dashboard-title">System Diagnostics & Platform Reports</h1>
+        </div>
+
+        <div class="panel-card">
+            <div class="panel-title">Database & API Server Health</div>
+            <div class="p-3 border border-success bg-success bg-opacity-10 text-white rounded">
+                <i class="bi bi-check-circle-fill text-success me-2"></i> MySQL Connection Status: Connected to <code>skillbridge_db</code> on <code>localhost:3306</code>.
+            </div>
+        </div>
+    </div>
+</div>

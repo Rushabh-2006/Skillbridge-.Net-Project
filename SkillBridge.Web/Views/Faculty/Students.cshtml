@@ -1,0 +1,50 @@
+@model List<SkillBridge.DataAccess.Entities.StudentProfile>
+@{
+    ViewData["Title"] = "Student Directory - SkillBridge";
+    Layout = "_Layout";
+}
+
+<div class="dashboard-wrapper">
+    @await Html.PartialAsync("_SidebarFaculty")
+
+    <div class="dashboard-main">
+        <div class="dashboard-header">
+            <h1 class="dashboard-title">Student Directory</h1>
+        </div>
+
+        <div class="panel-card">
+            <div class="panel-title">Tracked Students Overview (@(Model?.Count ?? 0) Students)</div>
+            <div class="table-responsive">
+                <table class="sb-table">
+                    <thead>
+                        <tr>
+                            <th>Student Name</th>
+                            <th>Degree Program</th>
+                            <th>Graduation Year</th>
+                            <th>Target Career</th>
+                            <th>Readiness Score</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model != null)
+                        {
+                            foreach (var s in Model)
+                            {
+                                string scoreBadge = s.ReadinessScore >= 70 ? "bg-success" : s.ReadinessScore >= 40 ? "bg-warning text-dark" : "bg-secondary";
+                                <tr>
+                                    <td class="fw-bold">@s.StudentName</td>
+                                    <td>@(string.IsNullOrWhiteSpace(s.Degree) ? "—" : s.Degree)</td>
+                                    <td>@(s.GraduationYear?.ToString() ?? "—")</td>
+                                    <td>@(string.IsNullOrWhiteSpace(s.TargetCareerTitle) ? "Not Chosen" : s.TargetCareerTitle)</td>
+                                    <td><span class="badge @scoreBadge">@s.ReadinessScore.ToString("0.0")%</span></td>
+                                    <td><a href="/Portfolio/Index/@s.Id" target="_blank" class="btn btn-outline-success btn-sm font-xs"><i class="bi bi-person-badge me-1"></i>Portfolio</a></td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

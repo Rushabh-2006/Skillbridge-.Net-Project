@@ -1,0 +1,92 @@
+@model SkillBridge.DataAccess.Entities.StudentProfile
+@{
+    ViewData["Title"] = "Target Career Goal - SkillBridge";
+    Layout = "_Layout";
+    var goals = ViewBag.CareerGoals as List<SkillBridge.DataAccess.Entities.CareerGoal>;
+}
+
+<div class="dashboard-wrapper">
+    @await Html.PartialAsync("_SidebarStudent")
+
+    <div class="dashboard-main">
+        <div class="dashboard-header">
+            <div>
+                <h1 class="dashboard-title">Target Career Goal</h1>
+                <div class="text-secondary small">Set or switch your desired engineering career trajectory</div>
+            </div>
+        </div>
+
+        @if (TempData["Success"] != null)
+        {
+            <div class="alert alert-success py-2">@TempData["Success"]</div>
+        }
+
+        <div class="row g-4">
+            <div class="col-lg-5">
+                <div class="panel-card h-100">
+                    <div class="panel-title"><i class="bi bi-bullseye text-primary me-2"></i>Current Target Career</div>
+                    <div class="p-4 rounded-3 mb-3" style="background: linear-gradient(135deg, #1e3a5f 0%, #0F172A 100%); border: 1px solid #3B82F6;">
+                        <span class="badge text-white fw-bold px-3 py-1 mb-2 d-inline-block" style="background-color: #2563EB;"><i class="bi bi-bullseye me-1"></i> Active Goal</span>
+                        <h2 class="fw-bold text-white fs-3 mb-2">@(Model?.TargetCareerTitle ?? "ASP.NET Developer")</h2>
+                        <p class="mb-3" style="color: #CBD5E1;">Your readiness score and skill gap calculations are dynamically analyzed against this role.</p>
+                        <div class="d-flex gap-2">
+                            <a href="/Student/SkillGap" class="btn btn-outline-primary btn-sm"><i class="bi bi-pie-chart-fill me-1"></i>View Skill Gap</a>
+                            <a href="/Student/Roadmap" class="btn btn-outline-light btn-sm"><i class="bi bi-signpost-split me-1"></i>View Roadmap</a>
+                        </div>
+                    </div>
+
+                    <div class="panel-title fs-6 mb-2">Change Target Career Goal</div>
+                    <form method="post" action="/Student/UpdateProfile">
+                        <input type="hidden" name="college" value="@Model?.College" />
+                        <input type="hidden" name="degree" value="@Model?.Degree" />
+                        <input type="hidden" name="graduationYear" value="@Model?.GraduationYear" />
+                        <input type="hidden" name="bio" value="@Model?.Bio" />
+                        <input type="hidden" name="linkedInUrl" value="@Model?.LinkedInUrl" />
+                        <input type="hidden" name="gitHubUrl" value="@Model?.GitHubUrl" />
+
+                        <div class="mb-3">
+                            <label class="form-label text-secondary small fw-bold">Select Career Path</label>
+                            <select name="targetCareerGoalId" class="form-select bg-dark text-white border-secondary" required>
+                                @if (goals != null)
+                                {
+                                    foreach (var g in goals)
+                                    {
+                                        <option value="@g.Id" selected="@(Model?.TargetCareerGoalId == g.Id ? "selected" : null)">@g.Title</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100"><i class="bi bi-check2-circle me-1"></i>Update Career Goal</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="col-lg-7">
+                <div class="panel-card h-100">
+                    <div class="panel-title"><i class="bi bi-compass text-info me-2"></i>Available Career Paths</div>
+                    <div class="row g-3">
+                        @if (goals != null)
+                        {
+                            foreach (var g in goals)
+                            {
+                                bool isSelected = Model?.TargetCareerGoalId == g.Id;
+                                <div class="col-12">
+                                <div class="p-3 rounded-3 border @(isSelected ? "border-primary" : "border-secondary")" style="background-color: @(isSelected ? "#0F2040" : "#0F172A");">
+                                        <div class="d-flex justify-content-between align-items-center mb-1">
+                                            <h4 class="fw-bold text-white fs-5 mb-0">@g.Title</h4>
+                                            @if (isSelected)
+                                            {
+                                                <span class="badge fw-bold text-white px-3 py-1" style="background-color: #10B981;"><i class="bi bi-check-circle-fill me-1"></i> Selected</span>
+                                            }
+                                        </div>
+                                        <p class="mb-0" style="color: #CBD5E1; font-size: 0.9rem;">@g.Description</p>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

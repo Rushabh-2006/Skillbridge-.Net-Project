@@ -1,0 +1,299 @@
+@model List<SkillBridge.DataAccess.Entities.Certification>
+@{
+    ViewData["Title"] = "Certification Review - SkillBridge";
+    Layout = "_Layout";
+}
+
+<!-- File View Modal -->
+<div class="modal fade" id="fileViewModal" tabindex="-1" aria-labelledby="fileViewModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="fileViewModalLabel">
+                    <i class="bi bi-file-earmark-text text-info me-2"></i>Certificate File
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label class="form-label text-secondary small">File Path / URL submitted by student:</label>
+                    <div class="file-path-display" id="modalFilePath"></div>
+                </div>
+                <div id="filePreviewArea"></div>
+                <div class="alert alert-info py-2 small mt-3 mb-0">
+                    <i class="bi bi-info-circle me-1"></i>
+                    If this is a URL, click the button below to open it in a new tab. If it is a local path, the student submitted a file reference that may need to be accessed from the server's upload directory.
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+                <a id="openFileLink" href="#" target="_blank" class="btn btn-info btn-sm">
+                    <i class="bi bi-box-arrow-up-right me-1"></i>Open in New Tab
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="dashboard-wrapper">
+    @await Html.PartialAsync("_SidebarFaculty")
+
+    <div class="dashboard-main">
+        <div class="dashboard-header">
+            <div>
+                <h1 class="dashboard-title">Student Certification Upload Review</h1>
+                <div class="text-secondary small">Review, verify or reject student-submitted certification evidence</div>
+            </div>
+            <span class="cert-pending-badge">
+                <i class="bi bi-hourglass-split me-1"></i>@Model.Count Pending Review
+            </span>
+        </div>
+
+        @if (TempData["Success"] != null)
+        {
+            <div class="alert alert-success py-2 mb-3">
+                <i class="bi bi-check-circle-fill me-2"></i>@TempData["Success"]
+            </div>
+        }
+
+        <div class="panel-card">
+            <div class="panel-title">
+                <span><i class="bi bi-patch-check-fill text-warning me-2"></i>Pending Student Certifications (Evidence Review)</span>
+            </div>
+
+            @if (!Model.Any())
+            {
+                <div class="empty-state">
+                    <i class="bi bi-check2-all empty-icon"></i>
+                    <div class="empty-title">All Caught Up!</div>
+                    <div class="empty-desc">There are no pending certifications to review at this time.</div>
+                </div>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="sb-table">
+                        <thead>
+                            <tr>
+                                <th>Student</th>
+                                <th>Certificate Title</th>
+                                <th>Issuing Org</th>
+                                <th>Linked Skill</th>
+                                <th>Uploaded File</th>
+                                <th>SHA-256 Hash</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var c in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center gap-2">
+                                            <div class="student-avatar">@(c.StudentName.Length > 0 ? c.StudentName[0].ToString().ToUpper() : "S")</div>
+                                            <span class="fw-semibold text-white">@c.StudentName</span>
+                                        </div>
+                                    </td>
+                                    <td class="text-white">@c.Title</td>
+                                    <td class="text-secondary">@c.IssuingOrganization</td>
+                                    <td>
+                                        <span class="skill-link-badge">
+                                            <i class="bi bi-tag-fill me-1"></i>@c.LinkedSkillName
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-view-file"
+                                                onclick="viewFile('@Html.Raw(c.FilePath.Replace("'", "\\'"))', '@Html.Raw(c.Title.Replace("'", "\\'"))')">
+                                            <i class="bi bi-file-earmark-pdf me-1"></i>View File
+                                        </button>
+                                    </td>
+                                    <td>
+                                        <span class="cert-hash-badge" title="@c.VerificationHash">
+                                            @(c.VerificationHash != null && c.VerificationHash.Length > 12
+                                                ? c.VerificationHash.Substring(0, 12) + "…"
+                                                : c.VerificationHash ?? "—")
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <form method="post" action="/Faculty/ReviewCert" class="d-flex gap-2">
+                                            <input type="hidden" name="certId" value="@c.Id" />
+                                            <button type="submit" name="status" value="Verified"
+                                                    class="btn btn-verify btn-sm">
+                                                <i class="bi bi-check-lg"></i> Verify
+                                            </button>
+                                            <button type="submit" name="status" value="Rejected"
+                                                    class="btn btn-reject btn-sm">
+                                                <i class="bi bi-x-lg"></i> Reject
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<style>
+    .cert-pending-badge {
+        display: inline-flex;
+        align-items: center;
+        background: rgba(245,158,11,0.15);
+        color: #FCD34D;
+        border: 1px solid rgba(245,158,11,0.3);
+        padding: 6px 14px;
+        border-radius: 9999px;
+        font-size: 0.85rem;
+        font-weight: 600;
+    }
+
+    /* Linked Skill badge — fully visible on dark background */
+    .skill-link-badge {
+        display: inline-flex;
+        align-items: center;
+        background: rgba(59,130,246,0.20);
+        color: #93C5FD;
+        border: 1px solid rgba(59,130,246,0.40);
+        padding: 3px 10px;
+        border-radius: 6px;
+        font-size: 0.82rem;
+        font-weight: 600;
+        white-space: nowrap;
+    }
+
+    .btn-view-file {
+        display: inline-flex;
+        align-items: center;
+        background: rgba(6,182,212,0.12);
+        color: #22D3EE;
+        border: 1px solid rgba(6,182,212,0.3);
+        border-radius: 6px;
+        font-size: 0.82rem;
+        font-weight: 500;
+        padding: 4px 10px;
+        transition: all 0.2s ease;
+        white-space: nowrap;
+        cursor: pointer;
+    }
+    .btn-view-file:hover {
+        background: rgba(6,182,212,0.25);
+        color: #67E8F9;
+        border-color: rgba(6,182,212,0.5);
+        transform: translateY(-1px);
+    }
+
+    .btn-verify {
+        background: rgba(16,185,129,0.15);
+        color: #34D399;
+        border: 1px solid rgba(16,185,129,0.35);
+        border-radius: 6px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        padding: 4px 10px;
+        transition: all 0.2s ease;
+        white-space: nowrap;
+    }
+    .btn-verify:hover {
+        background: rgba(16,185,129,0.30);
+        color: #6EE7B7;
+        border-color: rgba(16,185,129,0.6);
+    }
+
+    .btn-reject {
+        background: rgba(239,68,68,0.12);
+        color: #F87171;
+        border: 1px solid rgba(239,68,68,0.3);
+        border-radius: 6px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        padding: 4px 10px;
+        transition: all 0.2s ease;
+        white-space: nowrap;
+    }
+    .btn-reject:hover {
+        background: rgba(239,68,68,0.25);
+        color: #FCA5A5;
+        border-color: rgba(239,68,68,0.55);
+    }
+
+    .student-avatar {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #3B82F6, #8B5CF6);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.8rem;
+        font-weight: 700;
+        color: white;
+        flex-shrink: 0;
+    }
+
+    .file-path-display {
+        background: rgba(15,23,42,0.7);
+        border: 1px solid #334155;
+        border-radius: 6px;
+        padding: 10px 14px;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.82rem;
+        color: #38BDF8;
+        word-break: break-all;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 60px 20px;
+        color: #64748B;
+    }
+    .empty-icon { font-size: 3rem; color: #10B981; margin-bottom: 12px; display: block; }
+    .empty-title { font-size: 1.1rem; font-weight: 700; color: #CBD5E1; margin-bottom: 6px; }
+    .empty-desc  { font-size: 0.88rem; }
+</style>
+
+@section Scripts {
+    <script>
+        function viewFile(filePath, certTitle) {
+            document.getElementById('fileViewModalLabel').innerHTML =
+                '<i class="bi bi-file-earmark-text text-info me-2"></i>Certificate: ' + certTitle;
+            document.getElementById('modalFilePath').textContent = filePath;
+
+            var previewArea = document.getElementById('filePreviewArea');
+            var openLink = document.getElementById('openFileLink');
+
+            // Check if it looks like a URL
+            var isUrl = filePath.startsWith('http://') || filePath.startsWith('https://') || filePath.startsWith('/');
+
+            if (isUrl) {
+                openLink.href = filePath;
+                openLink.style.display = 'inline-flex';
+
+                // If PDF, embed it
+                if (filePath.toLowerCase().endsWith('.pdf')) {
+                    previewArea.innerHTML =
+                        '<iframe src="' + filePath + '" style="width:100%;height:420px;border:none;border-radius:6px;background:#0F172A;" title="Certificate Preview"></iframe>';
+                } else if (filePath.match(/\.(jpg|jpeg|png|gif|webp)$/i)) {
+                    previewArea.innerHTML =
+                        '<img src="' + filePath + '" style="max-width:100%;border-radius:6px;" alt="Certificate Image" onerror="this.style.display=\'none\';document.getElementById(\'imgError\').style.display=\'block\'" />' +
+                        '<div id="imgError" style="display:none;" class="text-secondary small mt-2"><i class="bi bi-image me-1"></i>Could not load image preview.</div>';
+                } else {
+                    previewArea.innerHTML = '<p class="text-secondary small"><i class="bi bi-file-earmark me-1"></i>Preview not available for this file type. Click "Open in New Tab" to view it.</p>';
+                }
+            } else {
+                // Local path or raw text submitted by student
+                openLink.style.display = 'none';
+                previewArea.innerHTML =
+                    '<div class="alert alert-warning py-2 small mb-0">' +
+                    '<i class="bi bi-folder2-open me-1"></i>' +
+                    'This appears to be a local file path submitted by the student. Access it from the server\'s file upload directory: <code>' + filePath + '</code>' +
+                    '</div>';
+            }
+
+            var modal = new bootstrap.Modal(document.getElementById('fileViewModal'));
+            modal.show();
+        }
+    </script>
+}

@@ -1,0 +1,67 @@
+@model List<SkillBridge.DataAccess.Entities.User>
+@{
+    ViewData["Title"] = "User Management - Admin - SkillBridge";
+    Layout = "_Layout";
+    var stats = ViewBag.Stats as SkillBridge.DataAccess.Repositories.AdminStatsSummary;
+}
+
+<div class="dashboard-wrapper">
+    @await Html.PartialAsync("_SidebarAdmin")
+
+    <div class="dashboard-main">
+        <div class="dashboard-header">
+            <h1 class="dashboard-title">Platform Administration & User Control</h1>
+        </div>
+
+        <div class="stat-cards-grid">
+            @await Html.PartialAsync("_StatCard", ((stats?.TotalUsers ?? Model?.Count ?? 0).ToString(), "Total Registered Users", "Platform Accounts", true))
+            @await Html.PartialAsync("_StatCard", ((stats?.PendingVerifications ?? 0).ToString(), "Pending Verifications", "Requires Action", false))
+            @await Html.PartialAsync("_StatCard", ((stats?.OpenInternships ?? 0).ToString(), "Active Internships", "Live Postings", true))
+            @await Html.PartialAsync("_StatCard", ((stats?.TotalApplications ?? 0).ToString(), "Total Applications", "Evaluations", true))
+        </div>
+
+        <div class="panel-card">
+            <div class="panel-title">System User Accounts</div>
+            <div class="table-responsive">
+                <table class="sb-table">
+                    <thead>
+                        <tr>
+                            <th>User ID</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                            <th>Phone</th>
+                            <th>Joined Date</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model != null)
+                        {
+                            foreach (var u in Model)
+                            {
+                                string badgeClass = u.Role switch
+                                {
+                                    "Student" => "bg-primary",
+                                    "Recruiter" => "bg-warning text-dark",
+                                    "Faculty" => "bg-info text-dark",
+                                    "Admin" => "bg-danger",
+                                    _ => "bg-secondary"
+                                };
+                                <tr>
+                                    <td>@u.Id</td>
+                                    <td class="fw-bold">@u.Name</td>
+                                    <td>@u.Email</td>
+                                    <td><span class="badge @badgeClass">@u.Role</span></td>
+                                    <td class="text-secondary small">@(u.PhoneNumber ?? "—")</td>
+                                    <td class="text-secondary small">@u.CreatedAt.ToString("MMM dd, yyyy")</td>
+                                    <td><span class="badge bg-success">Active & Verified ✓</span></td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

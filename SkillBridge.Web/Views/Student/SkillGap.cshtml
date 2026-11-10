@@ -1,0 +1,91 @@
+@model SkillBridge.DataAccess.Repositories.SkillGapAnalysisResult
+@{
+    ViewData["Title"] = "Skill Gap Analysis - SkillBridge";
+    Layout = "_Layout";
+    var profile = ViewBag.Profile as SkillBridge.DataAccess.Entities.StudentProfile;
+}
+
+<div class="dashboard-wrapper">
+    @await Html.PartialAsync("_SidebarStudent")
+
+    <div class="dashboard-main">
+        <div class="dashboard-header">
+            <div>
+                <h1 class="dashboard-title">Skill Gap Analysis</h1>
+                <div class="text-secondary small">Target Goal: <span class="text-primary fw-bold">@(profile?.TargetCareerTitle ?? "ASP.NET Developer")</span></div>
+            </div>
+            <div>
+                <span class="fs-4 fw-bold text-white">Overall Match: </span>
+                <span class="fs-4 fw-bold text-success">@Model.OverallMatchPercentage%</span>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <!-- YOUR SKILL GAP (Held Skills) -->
+            <div class="col-md-6">
+                <div class="panel-card h-100">
+                    <div class="panel-title text-success"><i class="bi bi-check-circle-fill me-2"></i>Skills You Currently Possess</div>
+                    <p class="text-white small mb-3">Required skills for your career goal that you currently hold with verified evidence or high confidence.</p>
+                    <div class="table-responsive">
+                        <table class="sb-table">
+                            <thead>
+                                <tr>
+                                    <th>Skill</th>
+                                    <th>Category</th>
+                                    <th>Confidence</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var s in Model.HeldSkills)
+                                {
+                                    <tr>
+                                        <td class="fw-bold text-white">@s.SkillName</td>
+                                        <td class="text-white">@s.Category</td>
+                                        <td><span class="badge bg-success text-white px-2 py-1">@s.ConfidencePercentage%</span></td>
+                                        <td>@await Html.PartialAsync("_StatusBadge", s.VerificationStatus)</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- NEEDS IMPROVEMENT (Missing Skills) -->
+            <div class="col-md-6">
+                <div class="panel-card h-100">
+                    <div class="panel-title text-warning"><i class="bi bi-exclamation-triangle-fill me-2"></i>Skills Needed for Goal</div>
+                    <p class="text-white small mb-3">Recommended learning focus areas based on requirements for <span class="text-primary fw-bold">@(profile?.TargetCareerTitle ?? "ASP.NET Developer")</span>.</p>
+                    <div class="table-responsive">
+                        <table class="sb-table">
+                            <thead>
+                                <tr>
+                                    <th>Skill</th>
+                                    <th>Category</th>
+                                    <th>Required</th>
+                                    <th>Action Plan</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var s in Model.MissingSkills)
+                                {
+                                    <tr>
+                                        <td class="fw-bold text-warning">@s.SkillName</td>
+                                        <td class="text-white">@s.Category</td>
+                                        <td><span class="badge bg-danger text-white px-2 py-1">Required</span></td>
+                                        <td>
+                                            <a href="/Student/Recommendations" class="btn btn-warning btn-sm py-1 px-2 fw-bold font-xs text-dark">
+                                                <i class="bi bi-code-square me-1"></i>Build Project
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

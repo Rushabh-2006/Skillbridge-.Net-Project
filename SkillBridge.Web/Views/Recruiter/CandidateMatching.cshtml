@@ -1,0 +1,50 @@
+@model List<SkillBridge.DataAccess.Entities.Application>
+@{
+    ViewData["Title"] = "Candidate Matching - SkillBridge";
+    Layout = "_Layout";
+}
+
+<div class="dashboard-wrapper">
+    @await Html.PartialAsync("_SidebarRecruiter")
+
+    <div class="dashboard-main">
+        <div class="dashboard-header">
+            <h1 class="dashboard-title">Candidate Skill Matching Engine</h1>
+        </div>
+
+        <div class="panel-card">
+            <div class="panel-title">Ranked Candidates by Skill Match Percentage</div>
+            <div class="table-responsive">
+                <table class="sb-table">
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Student Candidate</th>
+                            <th>Email</th>
+                            <th>Target Role</th>
+                            <th>Skill Match %</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{ int rank = 1; }
+                        @foreach (var app in Model)
+                        {
+                            <tr>
+                                <td class="fw-bold text-primary">#@rank</td>
+                                <td class="fw-bold">@app.StudentName</td>
+                                <td class="text-secondary">@app.StudentEmail</td>
+                                <td>@app.InternshipTitle</td>
+                                <td>@await Html.PartialAsync("_MatchBadge", (app.MatchPercentage, app.MinimumMatchPercentage))</td>
+                                <td>
+                                    <a href="/Portfolio/Index/@app.StudentId" target="_blank" class="btn btn-outline-primary btn-sm font-xs">View Proof-of-Work</a>
+                                </td>
+                            </tr>
+                            rank++;
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

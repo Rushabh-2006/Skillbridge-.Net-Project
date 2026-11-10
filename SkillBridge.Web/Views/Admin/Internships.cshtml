@@ -1,0 +1,19 @@
+@{
+    ViewData["Title"] = "Internship Jobs - Admin - SkillBridge";
+    Layout = "_Layout";
+}
+
+<div class="dashboard-wrapper">
+    @await Html.PartialAsync("_SidebarAdmin")
+
+    <div class="dashboard-main">
+        <div class="dashboard-header">
+            <h1 class="dashboard-title">System Internship Job Postings</h1>
+        </div>
+
+        <div class="panel-card">
+            <div class="panel-title">All Posted Internships</div>
+            <p class="text-secondary">System-wide internship job listings and minimum match threshold overrides.</p>
+        </div>
+    </div>
+</div>

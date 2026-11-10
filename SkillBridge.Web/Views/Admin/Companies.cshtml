@@ -1,0 +1,19 @@
+@{
+    ViewData["Title"] = "Companies - Admin - SkillBridge";
+    Layout = "_Layout";
+}
+
+<div class="dashboard-wrapper">
+    @await Html.PartialAsync("_SidebarAdmin")
+
+    <div class="dashboard-main">
+        <div class="dashboard-header">
+            <h1 class="dashboard-title">Registered Companies</h1>
+        </div>
+
+        <div class="panel-card">
+            <div class="panel-title">Corporate Recruiter Entities</div>
+            <p class="text-secondary">Manage verified corporate accounts and company organization profiles.</p>
+        </div>
+    </div>
+</div>

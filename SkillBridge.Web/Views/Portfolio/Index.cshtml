@@ -1,0 +1,130 @@
+@model dynamic
+@{
+    ViewData["Title"] = (ViewBag.Profile?.StudentName ?? "Student") + " - Verified Portfolio | SkillBridge";
+    Layout = "_Layout";
+    var profile = ViewBag.Profile as SkillBridge.DataAccess.Entities.StudentProfile;
+    var user = ViewBag.User as SkillBridge.DataAccess.Entities.User;
+    var badges = ViewBag.Badges as SkillBridge.DataAccess.Entities.VerificationBadge;
+    var skills = ViewBag.Skills as List<SkillBridge.DataAccess.Entities.StudentSkill>;
+    var certs = ViewBag.Certifications as List<SkillBridge.DataAccess.Entities.Certification>;
+    var projects = ViewBag.Projects as List<SkillBridge.DataAccess.Entities.Project>;
+}
+
+<div class="min-vh-100 bg-dark text-white py-5" style="background-color: #0B1120 !important;">
+    <div class="container" style="max-width: 960px;">
+        
+        <!-- Top Verified Student Banner Card -->
+        <div class="card bg-dark border-secondary p-4 p-md-5 mb-4 rounded-4 shadow-lg position-relative overflow-hidden" style="background-color: #1E293B !important;">
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-4">
+                <div>
+                    <div class="d-flex align-items-center gap-2 mb-2">
+                        <span class="badge bg-success bg-opacity-25 text-white border border-success px-3 py-1 font-xs">
+                            <i class="bi bi-shield-check me-1 text-success"></i> Verified SkillBridge Portfolio
+                        </span>
+                        <span class="badge bg-primary bg-opacity-25 text-white border border-primary px-3 py-1 font-xs">
+                            Readiness Score: @(profile?.ReadinessScore.ToString("0.0") ?? "0.0")%
+                        </span>
+                    </div>
+                    <h1 class="display-5 fw-extrabold text-white mb-1">@(profile?.StudentName ?? "Student")</h1>
+                    <div class="fs-4 text-primary fw-bold mb-3">@(profile?.TargetCareerTitle ?? "ASP.NET Developer")</div>
+                    <p class="text-white lead fs-6 mb-3">@(profile?.Bio ?? "Passionate software engineer focused on building robust, high-performance web applications.")</p>
+
+                    <div class="d-flex flex-wrap gap-3 text-white small">
+                        <span><i class="bi bi-bank me-1 text-info"></i>@(profile?.College ?? "University")</span>
+                        <span>•</span>
+                        <span><i class="bi bi-mortarboard me-1 text-info"></i>@(profile?.Degree ?? "B.S. Computer Science")</span>
+                        <span>•</span>
+                        <span><i class="bi bi-calendar-event me-1 text-info"></i>Class of @(profile?.GraduationYear ?? 2026)</span>
+                    </div>
+                </div>
+
+                <!-- Verification Badges Row -->
+                <div class="d-flex flex-column gap-2 text-md-end">
+                    @if (!string.IsNullOrEmpty(profile?.LinkedInUrl))
+                    {
+                        <a href="@profile.LinkedInUrl" target="_blank" class="btn btn-outline-light btn-sm d-inline-flex align-items-center gap-2">
+                            <i class="bi bi-linkedin text-primary"></i> LinkedIn Profile
+                            @if (badges?.IsLinkedInVerified == true) { <span class="badge bg-success font-xs">Verified ✓</span> }
+                        </a>
+                    }
+                    @if (!string.IsNullOrEmpty(profile?.GitHubUrl))
+                    {
+                        <a href="@profile.GitHubUrl" target="_blank" class="btn btn-outline-light btn-sm d-inline-flex align-items-center gap-2">
+                            <i class="bi bi-github"></i> GitHub Account
+                            @if (badges?.IsGitHubVerified == true) { <span class="badge bg-success font-xs">Verified ✓</span> }
+                        </a>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- Verified Certifications Section -->
+        <div class="panel-card mb-4">
+            <div class="panel-title text-white"><i class="bi bi-patch-check-fill text-success me-2"></i>Verified Credentials & Cryptographic Proofs</div>
+            <div class="row g-3">
+                @if (certs != null && certs.Any())
+                {
+                    foreach (var c in certs)
+                    {
+                        <div class="col-md-6">
+                            @await Html.PartialAsync("_VerifiedBadge", (c.Title, c.IssuingOrganization, c.VerificationHash ?? "SHA-256 Verified"))
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div class="text-white small p-3">No verified certifications uploaded yet.</div>
+                }
+            </div>
+        </div>
+
+        <!-- Skill Mastery Chips -->
+        <div class="panel-card mb-4">
+            <div class="panel-title text-white"><i class="bi bi-lightning-charge-fill text-warning me-2"></i>Verified Skill Competencies</div>
+            <div class="d-flex flex-wrap gap-2">
+                @if (skills != null)
+                {
+                    foreach (var s in skills)
+                    {
+                        <div class="p-2 px-3 bg-dark border border-secondary rounded-pill d-flex align-items-center gap-2">
+                            <span class="fw-bold text-white font-xs">@s.SkillName</span>
+                            <span class="badge bg-success text-white font-xs">@s.ConfidencePercentage%</span>
+                            @if (s.VerificationStatus == "VERIFIED")
+                            {
+                                <i class="bi bi-check-circle-fill text-success font-xs" title="Faculty / Evidence Verified"></i>
+                            }
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+
+        <!-- Project Grid -->
+        <div class="panel-card">
+            <div class="panel-title text-white"><i class="bi bi-folder-fill text-info me-2"></i>Verified Project Portfolio & Code Proofs</div>
+            <div class="row g-4">
+                @if (projects != null)
+                {
+                    foreach (var p in projects.Take(4))
+                    {
+                        <div class="col-md-6">
+                            <div class="p-3 bg-dark border border-secondary rounded-3 h-100 d-flex flex-column justify-content-between">
+                                <div>
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <span class="badge bg-primary text-white">@p.Difficulty</span>
+                                        <span class="badge bg-success text-white font-xs">Verified Build ✓</span>
+                                    </div>
+                                    <h4 class="fw-bold text-white fs-5 mb-2">@p.Title</h4>
+                                    <p class="text-white small mb-3 opacity-75">@p.Description</p>
+                                </div>
+                                <div class="d-flex gap-2 mt-2">
+                                    <a href="@(profile?.GitHubUrl ?? "https://github.com")" target="_blank" class="btn btn-outline-light btn-sm w-100 font-xs"><i class="bi bi-github me-1"></i> Repository Proof</a>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+</div>

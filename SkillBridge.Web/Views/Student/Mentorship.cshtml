@@ -1,0 +1,68 @@
+@model List<SkillBridge.DataAccess.Entities.Mentorship>
+@{
+    ViewData["Title"] = "Mentorship - SkillBridge";
+    Layout = "_Layout";
+}
+
+<div class="dashboard-wrapper">
+    @await Html.PartialAsync("_SidebarStudent")
+
+    <div class="dashboard-main">
+        <div class="dashboard-header">
+            <h1 class="dashboard-title">Faculty Mentorship Arrangement</h1>
+        </div>
+
+        @if (TempData["Success"] != null)
+        {
+            <div class="alert alert-success py-2">@TempData["Success"]</div>
+        }
+
+        <!-- Request Mentorship Form -->
+        <div class="panel-card mb-4">
+            <div class="panel-title">Request Mentorship Session</div>
+            <form method="post" action="/Student/RequestMentorship" class="row g-3">
+                <div class="col-md-6">
+                    <label class="form-label text-secondary small fw-bold">Mentorship Topic / Skill</label>
+                    <input type="text" name="topic" class="form-control bg-dark text-white border-secondary" placeholder="e.g. ASP.NET Web API Architecture" required />
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label text-secondary small fw-bold">Initial Request Notes</label>
+                    <input type="text" name="initialNotes" class="form-control bg-dark text-white border-secondary" placeholder="e.g. Seeking guidance on REST endpoint security" />
+                </div>
+                <div class="col-12">
+                    <button type="submit" class="btn btn-primary px-4"><i class="bi bi-people me-2"></i>Submit Request</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Active Mentorship Requests -->
+        <div class="panel-card">
+            <div class="panel-title">Mentorship History & Notes Thread</div>
+            <div class="table-responsive">
+                <table class="sb-table">
+                    <thead>
+                        <tr>
+                            <th>Topic</th>
+                            <th>Assigned Faculty</th>
+                            <th>Status</th>
+                            <th>Notes Thread</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var m in Model)
+                        {
+                            <tr>
+                                <td class="fw-bold">@m.Topic</td>
+                                <td>@(m.FacultyName ?? "Pending Assignment")</td>
+                                <td>@await Html.PartialAsync("_StatusBadge", m.Status)</td>
+                                <td class="small text-secondary">@m.Notes</td>
+                                <td class="small text-secondary">@m.RequestedAt.ToString("yyyy-MM-dd")</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

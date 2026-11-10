@@ -1,0 +1,51 @@
+@{
+    ViewData["Title"] = "Register - SkillBridge";
+    Layout = "_Layout";
+}
+
+<div class="min-vh-100 d-flex align-items-center justify-content-center bg-dark py-5">
+    <div class="card bg-dark text-white border-secondary shadow-lg p-4" style="max-width: 480px; width: 100%;">
+        <div class="text-center mb-4">
+            <a href="/" class="text-decoration-none fs-3 fw-bold text-white"><i class="bi bi-cpu-fill text-primary me-2"></i>Skill<span class="text-primary">Bridge</span></a>
+            <p class="text-secondary small mt-2">Create your account with role selection</p>
+        </div>
+
+        @if (ViewBag.Error != null)
+        {
+            <div class="alert alert-danger py-2 small">@ViewBag.Error</div>
+        }
+
+        <form method="post" action="/Account/Register">
+            <div class="mb-3">
+                <label class="form-label text-secondary small fw-bold">Full Name</label>
+                <input type="text" name="name" class="form-control bg-dark text-white border-secondary" placeholder="e.g. Aarav Mehta" required />
+            </div>
+            <div class="mb-3">
+                <label class="form-label text-secondary small fw-bold">Email Address</label>
+                <input type="email" name="email" class="form-control bg-dark text-white border-secondary" placeholder="e.g. aarav.mehta@skillbridge.io" required />
+            </div>
+            <div class="mb-3">
+                <label class="form-label text-secondary small fw-bold">Password</label>
+                <input type="password" name="password" class="form-control bg-dark text-white border-secondary" placeholder="••••••••" required />
+            </div>
+            <div class="mb-3">
+                <label class="form-label text-secondary small fw-bold">Select Your Role</label>
+                <select name="role" class="form-select bg-dark text-white border-secondary" required>
+                    <option value="Student">Student (Main user)</option>
+                    <option value="Recruiter">Company / Recruiter</option>
+                    <option value="Faculty">Faculty / Placement Officer</option>
+                    <option value="Admin">Platform Administrator</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label text-secondary small fw-bold">Phone Number (Optional)</label>
+                <input type="text" name="phoneNumber" class="form-control bg-dark text-white border-secondary" placeholder="+1-555-0199" />
+            </div>
+            <button type="submit" class="btn btn-primary w-100 py-2 fw-bold mb-3">Create Account</button>
+        </form>
+
+        <div class="text-center mt-3">
+            <a href="/Account/Login" class="text-primary small text-decoration-none">Already have an account? Sign in</a>
+        </div>
+    </div>
+</div>

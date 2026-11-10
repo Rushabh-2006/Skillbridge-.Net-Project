@@ -1,0 +1,63 @@
+@model List<SkillBridge.DataAccess.Entities.Internship>
+@{
+    ViewData["Title"] = "Recruiter Dashboard - SkillBridge";
+    Layout = "_Layout";
+    var topCandidates = ViewBag.TopCandidates as List<SkillBridge.DataAccess.Entities.Application>;
+}
+
+<div class="dashboard-wrapper">
+    @await Html.PartialAsync("_SidebarRecruiter")
+
+    <div class="dashboard-main">
+        <div class="dashboard-header">
+            <div>
+                <h1 class="dashboard-title">Recruiter Dashboard</h1>
+                <div class="text-secondary small">Nexus Cloud Technologies • Candidate Sourcing & Evaluation Hub</div>
+            </div>
+            <a href="/Recruiter/PostInternship" class="btn btn-primary btn-sm"><i class="bi bi-plus-lg"></i> Post New Internship</a>
+        </div>
+
+        <div class="stat-cards-grid">
+            @await Html.PartialAsync("_StatCard", (((object)ViewBag.InternshipsCount)?.ToString() ?? "0", "Active Postings", "Live Jobs", true))
+            @await Html.PartialAsync("_StatCard", (((object)ViewBag.ApplicantsCount)?.ToString() ?? "0", "Total Applicants", "Candidate Pool", true))
+            @await Html.PartialAsync("_StatCard", (((object)ViewBag.SelectedCount)?.ToString() ?? "0", "Auto-Selected", "Qualified Candidates", true))
+            @await Html.PartialAsync("_StatCard", ("96%", "Top Match %", "Peak Overlap", true))
+        </div>
+
+        <div class="panel-card mb-4">
+            <div class="panel-title">Top Ranked Applicants by Skill Match %</div>
+            <div class="table-responsive">
+                <table class="sb-table">
+                    <thead>
+                        <tr>
+                            <th>Candidate Name</th>
+                            <th>Role Applied</th>
+                            <th>Match %</th>
+                            <th>Auto Decision</th>
+                            <th>Final Decision</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (topCandidates != null)
+                        {
+                            foreach (var app in topCandidates)
+                            {
+                                <tr>
+                                    <td class="fw-bold">@app.StudentName</td>
+                                    <td>@app.InternshipTitle</td>
+                                    <td>@await Html.PartialAsync("_MatchBadge", (app.MatchPercentage, app.MinimumMatchPercentage))</td>
+                                    <td><span class="badge bg-secondary font-xs">@app.AutoDecision</span></td>
+                                    <td>@await Html.PartialAsync("_StatusBadge", app.FinalDecision)</td>
+                                    <td>
+                                        <a href="/Recruiter/Evaluation" class="btn btn-outline-light btn-sm font-xs">Review Candidate</a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

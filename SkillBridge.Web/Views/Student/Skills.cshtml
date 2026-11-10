@@ -1,0 +1,103 @@
+@model List<SkillBridge.DataAccess.Entities.StudentSkill>
+@{
+    ViewData["Title"] = "My Skills - SkillBridge";
+    Layout = "_Layout";
+    var masterSkills = ViewBag.MasterSkills as List<SkillBridge.DataAccess.Entities.Skill>;
+}
+
+<div class="dashboard-wrapper">
+    @await Html.PartialAsync("_SidebarStudent")
+
+    <div class="dashboard-main">
+        <div class="dashboard-header">
+            <h1 class="dashboard-title">My Skills & Evidence Checklist</h1>
+        </div>
+
+        @if (TempData["Success"] != null)
+        {
+            <div class="alert alert-success py-2">@TempData["Success"]</div>
+        }
+
+        <!-- Add Skill Form -->
+        <div class="panel-card mb-4">
+            <div class="panel-title">Add or Update Skill Confidence</div>
+            <form method="post" action="/Student/AddSkill" class="row g-3 align-items-end">
+                <div class="col-md-6">
+                    <label class="form-label text-secondary small fw-bold">Select Skill</label>
+                    <select name="skillId" class="form-select bg-dark text-white border-secondary" required>
+                        @if (masterSkills != null)
+                        {
+                            foreach (var s in masterSkills)
+                            {
+                                <option value="@s.Id">@s.Name (@s.Category)</option>
+                            }
+                        }
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label text-secondary small fw-bold">Confidence Level (%)</label>
+                    <input type="number" name="confidencePercentage" class="form-control bg-dark text-white border-secondary" min="1" max="100" value="75" required />
+                </div>
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-primary w-100"><i class="bi bi-plus-lg"></i> Save Skill</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Skills Table -->
+        <div class="panel-card">
+            <div class="panel-title">Active Student Skills</div>
+            <div class="table-responsive">
+                <table class="sb-table">
+                    <thead>
+                        <tr>
+                            <th>Skill Name</th>
+                            <th>Category</th>
+                            <th>Confidence</th>
+                            <th>Project Evidence</th>
+                            <th>Cert Evidence</th>
+                            <th>Faculty Verification</th>
+                            <th>Status</th>
+                            <th class="text-end">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var s in Model)
+                        {
+                            <tr id="skillRow@(s.SkillId)">
+                                <td class="fw-bold text-white">@s.SkillName</td>
+                                <td class="text-white">@s.SkillCategory</td>
+                                <td>
+                                    <form method="post" action="/Student/AddSkill" class="d-flex align-items-center gap-2 m-0">
+                                        <input type="hidden" name="skillId" value="@s.SkillId" />
+                                        <input type="number" name="confidencePercentage" value="@s.ConfidencePercentage" min="1" max="100" class="form-control form-control-sm bg-dark text-white border-secondary" style="width: 75px;" />
+                                        <button type="submit" class="btn btn-sm btn-primary py-1 px-2" title="Save updated confidence">
+                                            <i class="bi bi-check-lg"></i>
+                                        </button>
+                                    </form>
+                                </td>
+                                <td><span style="color: @(s.HasProjectEvidence ? "#34D399" : "#8899A8"); font-weight: @(s.HasProjectEvidence ? "700" : "400");">@(s.HasProjectEvidence ? "✓ Verified" : "— None")</span></td>
+                                <td><span style="color: @(s.HasCertificateEvidence ? "#34D399" : "#8899A8"); font-weight: @(s.HasCertificateEvidence ? "700" : "400");">@(s.HasCertificateEvidence ? "✓ Uploaded" : "— None")</span></td>
+                                <td><span style="color: @(s.HasFacultyVerification ? "#34D399" : "#8899A8"); font-weight: @(s.HasFacultyVerification ? "700" : "400");">@(s.HasFacultyVerification ? "✓ Verified" : "— None")</span></td>
+                                <td>@await Html.PartialAsync("_StatusBadge", s.VerificationStatus)</td>
+                                <td class="text-end">
+                                    <div class="d-flex justify-content-end gap-1">
+                                        <button type="button" class="btn btn-sm btn-outline-primary py-1 px-2" onclick="document.querySelector('select[name=skillId]').value='@s.SkillId'; document.querySelector('input[name=confidencePercentage]').value='@s.ConfidencePercentage'; window.scrollTo({top: 0, behavior: 'smooth'});">
+                                            <i class="bi bi-pencil-square"></i> Edit
+                                        </button>
+                                        <form method="post" action="/Student/DeleteSkill" onsubmit="return confirm('Are you sure you want to delete this skill?');" class="d-inline">
+                                            <input type="hidden" name="skillId" value="@s.SkillId" />
+                                            <button type="submit" class="btn btn-sm btn-outline-danger py-1 px-2" title="Delete Skill">
+                                                <i class="bi bi-trash"></i> Delete
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

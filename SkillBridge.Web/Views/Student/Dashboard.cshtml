@@ -1,0 +1,145 @@
+@{
+    ViewData["Title"] = "Student Dashboard - SkillBridge";
+    Layout = "_Layout";
+    var profile = ViewBag.Profile as SkillBridge.DataAccess.Entities.StudentProfile;
+    var readiness = ViewBag.Readiness as SkillBridge.DataAccess.Repositories.StudentReadinessBreakdown;
+    var skills = ViewBag.StudentSkills as List<SkillBridge.DataAccess.Entities.StudentSkill>;
+}
+
+<div class="dashboard-wrapper">
+    @await Html.PartialAsync("_SidebarStudent")
+
+    <div class="dashboard-main">
+        <div class="dashboard-header">
+            <div>
+                <h1 class="dashboard-title">Student Dashboard</h1>
+                <div class="fs-4 fw-bold text-white mt-1">Welcome back, <span class="text-primary">@(profile?.StudentName ?? "Student")</span> 👋</div>
+                <div class="text-white small mt-1">Target Career: <span class="badge bg-primary bg-opacity-25 text-white border border-primary px-2 py-1">@(profile?.TargetCareerTitle ?? "ASP.NET Developer")</span></div>
+            </div>
+            <div class="dashboard-user-bar">
+                <a href="/Portfolio/Index/@(profile?.Id ?? 1)" target="_blank" class="btn btn-outline-success"><i class="bi bi-eye me-1"></i> View Public Portfolio</a>
+            </div>
+        </div>
+
+        <!-- 4 Top Stat Cards -->
+        @{
+            string readinessVal = readiness != null ? readiness.OverallReadiness.ToString("0.0") + "%" : "0%";
+            string skillGapVal = ViewBag.SkillGapMatch != null ? ViewBag.SkillGapMatch.ToString() + "%" : "0%";
+            string roadmapVal = (ViewBag.RoadmapCompletedCount ?? 0).ToString() + " of " + (ViewBag.RoadmapTotalCount ?? 0).ToString();
+            string appsVal = ViewBag.ActiveAppsCount != null ? ViewBag.ActiveAppsCount.ToString() : "0";
+        }
+        <div class="stat-cards-grid">
+            @await Html.PartialAsync("_StatCard", (readinessVal, "Overall Readiness Score", "+2.5% this month", true))
+            @await Html.PartialAsync("_StatCard", (skillGapVal, "Career Skill Gap Match", "Target Career Overlap", true))
+            @await Html.PartialAsync("_StatCard", (roadmapVal, "Roadmap Steps Done", "Level Progress", true))
+            @await Html.PartialAsync("_StatCard", (appsVal, "Active Applications", "Auto-Evaluated", true))
+        </div>
+
+        <!-- Readiness Component Breakdown -->
+        <div class="panel-card mb-4">
+            <div class="panel-title">
+                <span><i class="bi bi-speedometer2 text-primary me-2"></i>Readiness Score Component Breakdown</span>
+                <span class="fs-4 fw-bold text-success">@readiness?.OverallReadiness.ToString("0.0")%</span>
+            </div>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <div class="mb-2 d-flex justify-content-between small text-white">
+                        <span>Skills Evidence (30%)</span>
+                        <span class="fw-bold text-white">@readiness?.SkillsScore%</span>
+                    </div>
+                    <div class="progress bg-dark" style="height: 10px;">
+                        <div class="progress-bar bg-primary" style="width: @readiness?.SkillsScore%"></div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-2 d-flex justify-content-between small text-white">
+                        <span>Project Evidence (25%)</span>
+                        <span class="fw-bold text-white">@readiness?.ProjectsScore%</span>
+                    </div>
+                    <div class="progress bg-dark" style="height: 10px;">
+                        <div class="progress-bar bg-info" style="width: @readiness?.ProjectsScore%"></div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-2 d-flex justify-content-between small text-white">
+                        <span>Certifications (15%)</span>
+                        <span class="fw-bold text-white">@readiness?.CertificationsScore%</span>
+                    </div>
+                    <div class="progress bg-dark" style="height: 10px;">
+                        <div class="progress-bar bg-success" style="width: @readiness?.CertificationsScore%"></div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-2 d-flex justify-content-between small text-white">
+                        <span>Internship Offers (15%)</span>
+                        <span class="fw-bold text-white">@readiness?.InternshipsScore%</span>
+                    </div>
+                    <div class="progress bg-dark" style="height: 10px;">
+                        <div class="progress-bar bg-warning" style="width: @readiness?.InternshipsScore%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Student Skills Table -->
+        <div class="panel-card">
+            <div class="panel-title">
+                <span><i class="bi bi-lightning-charge text-warning me-2"></i>My Skill Evidence & Verification</span>
+                <a href="/Student/Skills" class="btn btn-outline-light btn-sm"><i class="bi bi-gear me-1"></i>Manage Skills</a>
+            </div>
+            <div class="table-responsive">
+                <table class="sb-table">
+                    <thead>
+                        <tr>
+                            <th>Skill</th>
+                            <th>Category</th>
+                            <th>Confidence</th>
+                            <th>Evidence Checklist</th>
+                            <th>Verification</th>
+                            <th class="text-end">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (skills != null)
+                        {
+                            foreach (var s in skills)
+                            {
+                                <tr>
+                                    <td class="fw-bold text-white">@s.SkillName</td>
+                                    <td class="text-white">@s.SkillCategory</td>
+                                    <td>
+                                        <div class="d-flex align-items-center gap-2">
+                                            <div class="progress bg-dark w-100" style="height: 8px;">
+                                                <div class="progress-bar bg-success" style="width: @s.ConfidencePercentage%"></div>
+                                            </div>
+                                            <span class="small fw-bold text-white">@s.ConfidencePercentage%</span>
+                                        </div>
+                                    </td>
+                                    <td class="small">
+                                        <span class="me-2" style="color: @(s.HasProjectEvidence ? "#34D399" : "#8899A8"); font-weight: @(s.HasProjectEvidence ? "700" : "400");">&#10003; Project</span>
+                                        <span class="me-2" style="color: @(s.HasCertificateEvidence ? "#34D399" : "#8899A8"); font-weight: @(s.HasCertificateEvidence ? "700" : "400");">&#10003; Cert</span>
+                                        <span class="me-2" style="color: @(s.HasFacultyVerification ? "#34D399" : "#8899A8"); font-weight: @(s.HasFacultyVerification ? "700" : "400");">&#10003; Faculty</span>
+                                    </td>
+                                    <td>@await Html.PartialAsync("_StatusBadge", s.VerificationStatus)</td>
+                                    <td class="text-end">
+                                        <div class="d-flex justify-content-end gap-1">
+                                            <a href="/Student/Skills#skillRow@(s.SkillId)" class="btn btn-sm btn-outline-primary py-1 px-2" title="Edit Skill">
+                                                <i class="bi bi-pencil-square"></i> Edit
+                                            </a>
+                                            <form method="post" action="/Student/DeleteSkill" onsubmit="return confirm('Are you sure you want to delete this skill?');" class="d-inline">
+                                                <input type="hidden" name="skillId" value="@s.SkillId" />
+                                                <button type="submit" class="btn btn-sm btn-outline-danger py-1 px-2" title="Delete Skill">
+                                                    <i class="bi bi-trash"></i> Delete
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

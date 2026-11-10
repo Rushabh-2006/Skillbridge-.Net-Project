@@ -1,0 +1,44 @@
+@model List<SkillBridge.DataAccess.Entities.RoadmapLevel>
+@{
+    ViewData["Title"] = "Career Roadmap - SkillBridge";
+    Layout = "_Layout";
+    var profile = ViewBag.Profile as SkillBridge.DataAccess.Entities.StudentProfile;
+}
+
+<div class="dashboard-wrapper">
+    @await Html.PartialAsync("_SidebarStudent")
+
+    <div class="dashboard-main">
+        <div class="dashboard-header">
+            <div>
+                <h1 class="dashboard-title">Career Roadmap</h1>
+                <div class="text-secondary small">5-Level Rule-Based Roadmap for <span class="text-primary fw-bold">@(profile?.TargetCareerTitle ?? "ASP.NET Developer")</span></div>
+            </div>
+        </div>
+
+        <div class="panel-card">
+            <div class="panel-title">Roadmap Progression</div>
+
+            <div class="position-relative ps-4 border-start border-secondary border-2 ms-3 my-4">
+                @foreach (var level in Model)
+                {
+                    <div class="mb-5 position-relative">
+                        <div class="position-absolute top-0 start-0 translate-middle-x rounded-circle p-2 @(level.IsCompleted ? "bg-success" : "bg-secondary") text-white" style="margin-left: -25px;">
+                            <i class="bi @(level.IsCompleted ? "bi-check-lg" : "bi-arrow-right")"></i>
+                        </div>
+                        <div class="card bg-dark border-secondary p-4 ms-4">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <h4 class="fw-bold text-white mb-0">@level.LevelTitle</h4>
+                                <span class="badge @(level.IsCompleted ? "bg-success" : "bg-warning") font-xs">
+                                    @(level.IsCompleted ? "Completed ✓" : "Pending →")
+                                </span>
+                            </div>
+                            <div class="text-secondary small mb-3">Target Skill: <span class="text-info fw-bold">@level.SkillName</span></div>
+                            <p class="text-muted small mb-0">@level.Description</p>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

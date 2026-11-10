@@ -1,0 +1,13 @@
+@model (string Title, string Org, string Hash)
+
+<div class="p-3 border border-success border-opacity-50 rounded-3 bg-success bg-opacity-10 text-white my-2">
+    <div class="d-flex justify-content-between align-items-center mb-1">
+        <span class="fw-bold text-success"><i class="bi bi-patch-check-fill me-1"></i> Verified Credential</span>
+        <span class="badge text-white fw-bold px-3 py-1" style="background-color: #10B981;">Verified ✓</span>
+    </div>
+    <div class="fw-bold fs-6 mb-1 text-white">@Model.Title</div>
+    <div class="small mb-2" style="color: #94A3B8;">Issued by @Model.Org</div>
+    <div class="verified-hash-badge text-truncate w-100">
+        <i class="bi bi-shield-lock"></i> SHA-256: @Model.Hash
+    </div>
+</div>

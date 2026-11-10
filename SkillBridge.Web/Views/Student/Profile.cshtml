@@ -1,0 +1,113 @@
+@model SkillBridge.DataAccess.Entities.StudentProfile
+@{
+    ViewData["Title"] = "My Profile - SkillBridge";
+    Layout = "_Layout";
+    var badges = ViewBag.Badges as SkillBridge.DataAccess.Entities.VerificationBadge;
+    var goals = ViewBag.CareerGoals as List<SkillBridge.DataAccess.Entities.CareerGoal>;
+}
+
+<div class="dashboard-wrapper">
+    @await Html.PartialAsync("_SidebarStudent")
+
+    <div class="dashboard-main">
+        <div class="dashboard-header">
+            <h1 class="dashboard-title">My Profile & Verification Badges</h1>
+        </div>
+
+        @if (TempData["Success"] != null)
+        {
+            <div class="alert alert-success py-2">@TempData["Success"]</div>
+        }
+
+        <!-- Profile Verification Badges Section (Section 4.15) -->
+        <div class="panel-card mb-4">
+            <div class="panel-title"><i class="bi bi-shield-check text-success me-2"></i>Account Verification Badges</div>
+            <div class="row g-3">
+                <div class="col-md-3">
+                    <div class="p-3 border border-secondary rounded-2 bg-dark d-flex align-items-center justify-content-between">
+                        <div>
+                            <div class="small text-secondary">Email Address</div>
+                            <div class="fw-bold">@Model?.StudentEmail</div>
+                        </div>
+                        <span class="badge @(badges?.IsEmailVerified == true ? "bg-success" : "bg-warning")">@(badges?.IsEmailVerified == true ? "Verified ✓" : "Unverified")</span>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="p-3 border border-secondary rounded-2 bg-dark d-flex align-items-center justify-content-between">
+                        <div>
+                            <div class="small text-secondary">Phone Number</div>
+                            <div class="fw-bold">+1-415-555-0142</div>
+                        </div>
+                        <span class="badge @(badges?.IsPhoneVerified == true ? "bg-success" : "bg-warning")">@(badges?.IsPhoneVerified == true ? "Verified ✓" : "Unverified")</span>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="p-3 border border-secondary rounded-2 bg-dark d-flex align-items-center justify-content-between gap-2 overflow-hidden">
+                        <div class="overflow-hidden" style="min-width: 0;">
+                            <div class="small text-secondary">LinkedIn Profile</div>
+                            <div class="fw-bold text-truncate" title="@(Model?.LinkedInUrl ?? "Not linked")">@(string.IsNullOrEmpty(Model?.LinkedInUrl) ? "Not linked" : Model.LinkedInUrl)</div>
+                        </div>
+                        <span class="badge flex-shrink-0 @(badges?.IsLinkedInVerified == true ? "bg-success" : "bg-warning")">@(badges?.IsLinkedInVerified == true ? "Verified ✓" : "Unverified")</span>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="p-3 border border-secondary rounded-2 bg-dark d-flex align-items-center justify-content-between gap-2 overflow-hidden">
+                        <div class="overflow-hidden" style="min-width: 0;">
+                            <div class="small text-secondary">GitHub Profile</div>
+                            <div class="fw-bold text-truncate" title="@(Model?.GitHubUrl ?? "Not linked")">@(string.IsNullOrEmpty(Model?.GitHubUrl) ? "Not linked" : Model.GitHubUrl)</div>
+                        </div>
+                        <span class="badge flex-shrink-0 @(badges?.IsGitHubVerified == true ? "bg-success" : "bg-warning")">@(badges?.IsGitHubVerified == true ? "Verified ✓" : "Unverified")</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Edit Profile Form -->
+        <div class="panel-card">
+            <div class="panel-title">Edit Profile Information</div>
+            <form method="post" action="/Student/UpdateProfile">
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label text-secondary small fw-bold">College / University</label>
+                        <input type="text" name="college" class="form-control bg-dark text-white border-secondary" value="@Model?.College" />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label text-secondary small fw-bold">Degree Program</label>
+                        <input type="text" name="degree" class="form-control bg-dark text-white border-secondary" value="@Model?.Degree" />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label text-secondary small fw-bold">Graduation Year</label>
+                        <input type="number" name="graduationYear" class="form-control bg-dark text-white border-secondary" value="@Model?.GraduationYear" />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label text-secondary small fw-bold">Target Career Goal</label>
+                        <select name="targetCareerGoalId" class="form-select bg-dark text-white border-secondary">
+                            @if (goals != null)
+                            {
+                                foreach (var g in goals)
+                                {
+                                    <option value="@g.Id" selected="@(Model?.TargetCareerGoalId == g.Id ? "selected" : null)">@g.Title</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label text-secondary small fw-bold">LinkedIn URL</label>
+                        <input type="url" name="linkedInUrl" class="form-control bg-dark text-white border-secondary" value="@Model?.LinkedInUrl" />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label text-secondary small fw-bold">GitHub URL</label>
+                        <input type="url" name="gitHubUrl" class="form-control bg-dark text-white border-secondary" value="@Model?.GitHubUrl" />
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label text-secondary small fw-bold">Bio</label>
+                        <textarea name="bio" class="form-control bg-dark text-white border-secondary" rows="3">@Model?.Bio</textarea>
+                    </div>
+                    <div class="col-12 mt-4">
+                        <button type="submit" class="btn btn-primary px-4">Save Profile Changes</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

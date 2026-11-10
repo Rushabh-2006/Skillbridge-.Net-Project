@@ -1,0 +1,218 @@
+@model SkillBridge.DataAccess.Repositories.FacultyAnalyticsSummary
+@{
+    ViewData["Title"] = "Institutional Reports - SkillBridge";
+    Layout = "_Layout";
+
+    int total = Model.TotalStudents > 0 ? Model.TotalStudents : 1;
+    int readyPct = (int)Math.Round((double)Model.PlacementReadyCount / total * 100);
+    int improvePct = (int)Math.Round((double)Model.NeedsImprovementCount / total * 100);
+    int notStartedPct = (int)Math.Round((double)Model.NotStartedCount / total * 100);
+}
+
+<div class="dashboard-wrapper">
+    @await Html.PartialAsync("_SidebarFaculty")
+
+    <div class="dashboard-main">
+        <div class="dashboard-header">
+            <div>
+                <h1 class="dashboard-title">Institutional Placement Reports</h1>
+                <div class="text-secondary small">Comprehensive analytics export for university accreditation and board reviews</div>
+            </div>
+        </div>
+
+        <div class="panel-card mb-4">
+            <div class="panel-title"><i class="bi bi-file-earmark-arrow-down text-primary me-2"></i>Downloadable Student Analytics</div>
+            <p class="text-secondary">Export structured placement readiness reports and skill gap distributions directly to PDF or CSV format.</p>
+            <div class="d-flex flex-wrap gap-3 mt-3">
+                <button class="btn btn-primary d-flex align-items-center gap-2" onclick="exportReadinessPDF()">
+                    <i class="bi bi-file-earmark-pdf-fill"></i> Export PDF Readiness Report
+                </button>
+                <button class="btn btn-outline-info d-flex align-items-center gap-2" onclick="exportSkillGapCSV()">
+                    <i class="bi bi-file-earmark-spreadsheet-fill"></i> Export Skill Gap CSV
+                </button>
+                <button class="btn btn-outline-secondary d-flex align-items-center gap-2" onclick="window.print()">
+                    <i class="bi bi-printer-fill"></i> Print Summary Page
+                </button>
+            </div>
+        </div>
+
+        <!-- Printable & Exportable Report Container -->
+        <div id="reportContent">
+            <!-- Summary Stats Card -->
+            <div class="panel-card mb-4">
+                <div class="panel-title"><i class="bi bi-speedometer2 text-info me-2"></i>Executive Summary Metric Breakdown</div>
+                <div class="stat-cards-grid mb-3">
+                    @await Html.PartialAsync("_StatCard", (Model.TotalStudents.ToString(), "Total Tracked", "All Enrolled", true))
+                    @await Html.PartialAsync("_StatCard", ($"{Model.PlacementReadyCount} ({readyPct}%)", "Placement Ready", "≥70% Score", true))
+                    @await Html.PartialAsync("_StatCard", ($"{Model.NeedsImprovementCount} ({improvePct}%)", "Needs Improvement", "40-69% Score", false))
+                    @await Html.PartialAsync("_StatCard", ($"{Model.NotStartedCount} ({notStartedPct}%)", "Not Started / At Risk", "<40% Score", false))
+                </div>
+            </div>
+
+            <!-- Top Missing Skills Table -->
+            <div class="panel-card mb-4">
+                <div class="panel-title d-flex justify-content-between align-items-center">
+                    <span><i class="bi bi-exclamation-octagon text-danger me-2"></i>Top Institutional Skill Gaps</span>
+                    <span class="badge bg-primary bg-opacity-20 text-info px-3 py-2">@Model.TopMissingSkills.Count Identified Gap Areas</span>
+                </div>
+                <div class="table-responsive">
+                    <table class="sb-table" id="reportSkillTable">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Skill Name</th>
+                                <th>Lacking Students Count</th>
+                                <th>Student Deficit Percentage</th>
+                                <th>Recommended Strategic Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{ int rank = 1; }
+                            @foreach (var item in Model.TopMissingSkills)
+                            {
+                                int deficitPct = (int)Math.Round((double)item.StudentCount / total * 100);
+                                <tr>
+                                    <td class="text-secondary">@(rank++)</td>
+                                    <td class="fw-bold text-white">@item.SkillName</td>
+                                    <td>
+                                        <span class="student-count-badge-report">
+                                            @item.StudentCount Students
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <div class="d-flex align-items-center gap-2">
+                                            <div class="progress flex-grow-1" style="height: 6px; background: rgba(255,255,255,0.1);">
+                                                <div class="progress-bar bg-danger" style="width: @deficitPct%"></div>
+                                            </div>
+                                            <span class="small text-secondary">@deficitPct%</span>
+                                        </div>
+                                    </td>
+                                    <td class="text-secondary small">
+                                        @(deficitPct >= 40 ? "Mandatory department workshop & hackathon" : "Elective seminar & hands-on lab sessions")
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .student-count-badge-report {
+        display: inline-flex;
+        align-items: center;
+        padding: 5px 12px;
+        background: rgba(239, 68, 68, 0.22) !important;
+        color: #FCA5A5 !important;
+        border: 1px solid rgba(239, 68, 68, 0.45);
+        border-radius: 6px;
+        font-size: 0.9rem;
+        font-weight: 700;
+        letter-spacing: 0.02em;
+    }
+</style>
+
+@section Scripts {
+    <!-- jsPDF & autoTable CDN for PDF Export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+    
+    <script>
+        function exportSkillGapCSV() {
+            let csvContent = "data:text/csv;charset=utf-8,";
+            csvContent += "Rank,Skill Name,Lacking Students Count,Student Deficit Percentage,Recommended Action\n";
+
+            const rows = document.querySelectorAll("#reportSkillTable tbody tr");
+            rows.forEach((row) => {
+                const cols = row.querySelectorAll("td");
+                if (cols.length >= 5) {
+                    const rank = cols[0].innerText.trim();
+                    const skill = `"${cols[1].innerText.trim()}"`;
+                    const count = `"${cols[2].innerText.trim()}"`;
+                    const deficit = `"${cols[3].innerText.trim()}"`;
+                    const action = `"${cols[4].innerText.trim().replace(/"/g, '""')}"`;
+                    csvContent += `${rank},${skill},${count},${deficit},${action}\n`;
+                }
+            });
+
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", `SkillBridge_Skill_Gap_Report_${new Date().toISOString().slice(0,10)}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        function exportReadinessPDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            // Header Banner
+            doc.setFillColor(15, 23, 42); // Navy Dark
+            doc.rect(0, 0, 210, 35, 'F');
+            
+            doc.setTextColor(255, 255, 255);
+            doc.setFontSize(18);
+            doc.text("SkillBridge Institutional Readiness Report", 14, 18);
+            
+            doc.setFontSize(10);
+            doc.setTextColor(148, 163, 184);
+            doc.text(`Generated on: ${new Date().toLocaleDateString()} | Department of Computer Science`, 14, 28);
+
+            // Summary Section
+            doc.setTextColor(15, 23, 42);
+            doc.setFontSize(13);
+            doc.text("1. Executive Summary & Readiness Distribution", 14, 48);
+
+            const summaryData = [
+                ["Total Tracked Students", "@Model.TotalStudents", "100% of enrolled batch"],
+                ["Placement Ready (>=70%)", "@Model.PlacementReadyCount", "@readyPct% (Job Ready)"],
+                ["Needs Improvement (40-69%)", "@Model.NeedsImprovementCount", "@improvePct% (In Training/Intervention)"],
+                ["Not Started / At Risk (<40%)", "@Model.NotStartedCount", "@notStartedPct% (Mentorship Required)"]
+            ];
+
+            doc.autoTable({
+                startY: 53,
+                head: [['Classification', 'Student Count', 'Percentage / Notes']],
+                body: summaryData,
+                theme: 'striped',
+                headStyles: { fillColor: [59, 130, 246] }
+            });
+
+            // Missing Skills Section
+            const currentY = doc.lastAutoTable.finalY + 12;
+            doc.setFontSize(13);
+            doc.text("2. Critical Missing Skills (Curriculum & Workshop Focus)", 14, currentY);
+
+            const tableData = [];
+            const rows = document.querySelectorAll("#reportSkillTable tbody tr");
+            rows.forEach((row) => {
+                const cols = row.querySelectorAll("td");
+                if (cols.length >= 5) {
+                    tableData.push([
+                        cols[0].innerText.trim(),
+                        cols[1].innerText.trim(),
+                        cols[2].innerText.trim(),
+                        cols[3].innerText.trim(),
+                        cols[4].innerText.trim()
+                    ]);
+                }
+            });
+
+            doc.autoTable({
+                startY: currentY + 5,
+                head: [['#', 'Skill Name', 'Lacking Count', 'Deficit %', 'Action Plan']],
+                body: tableData,
+                theme: 'grid',
+                headStyles: { fillColor: [239, 68, 68] },
+                styles: { fontSize: 9 }
+            });
+
+            doc.save(`SkillBridge_Readiness_Report_${new Date().toISOString().slice(0,10)}.pdf`);
+        }
+    </script>
+}

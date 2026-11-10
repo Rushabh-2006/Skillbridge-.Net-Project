@@ -1,0 +1,137 @@
+@{
+    ViewData["Title"] = "SkillBridge - Placement Intelligence & Skill Gap Platform";
+    Layout = "_Layout";
+}
+
+<!-- Top Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark py-3 border-bottom border-secondary border-opacity-25 sticky-top">
+    <div class="container">
+        <a class="navbar-brand fw-bold fs-4" href="/"><i class="bi bi-cpu-fill text-primary me-2"></i>Skill<span class="text-primary">Bridge</span></a>
+        <div class="d-flex gap-3">
+            <a href="/Account/Login" class="btn btn-outline-light px-4">Sign In</a>
+            <a href="/Account/Register" class="btn btn-primary px-4">Get Started</a>
+        </div>
+    </div>
+</nav>
+
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-7">
+                <div class="hero-headline">Bridge the gap from campus to high-impact engineering careers.</div>
+                <div class="hero-subhead">SkillBridge is a placement intelligence SaaS providing data-driven skill gap analysis, rule-based career roadmaps, and verified digital proof-of-work for students, recruiters, and faculty.</div>
+                <div class="d-flex gap-3 mb-4">
+                    <a href="/Account/Register" class="btn btn-primary btn-lg px-4 py-3 fw-bold">Analyze Your Skill Gap <i class="bi bi-arrow-right ms-2"></i></a>
+                    <a href="#features" class="btn btn-outline-light btn-lg px-4 py-3">Explore Features</a>
+                </div>
+                <div class="text-muted small mb-5"><i class="bi bi-shield-check text-success me-1"></i> Trusted by university placement offices & top tech recruiters</div>
+                
+                <div class="hero-stats-row">
+                    <div>
+                        <div class="hero-stat-number">25+</div>
+                        <div class="hero-stat-label">Core Tech Skills</div>
+                    </div>
+                    <div>
+                        <div class="hero-stat-number">100%</div>
+                        <div class="hero-stat-label">Verified Proof-of-Work</div>
+                    </div>
+                    <div>
+                        <div class="hero-stat-number">5-Level</div>
+                        <div class="hero-stat-label">Structured Roadmaps</div>
+                    </div>
+                    <div>
+                        <div class="hero-stat-number">78.5%</div>
+                        <div class="hero-stat-label">Avg Readiness Score</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-5 mt-5 mt-lg-0">
+                <div class="hero-mockup-card">
+                    <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom border-secondary border-opacity-50">
+                        <span class="fw-bold text-white"><i class="bi bi-speedometer2 text-primary me-2"></i>Student Dashboard Preview</span>
+                        <span class="badge bg-success bg-opacity-20 text-success">Live Software</span>
+                    </div>
+                    <div class="mb-3">
+                        <div class="text-secondary small uppercase fw-bold mb-1">Overall Career Readiness</div>
+                        <div class="progress" style="height: 12px;">
+                            <div class="progress-bar bg-success" style="width: 78.5%">78.5%</div>
+                        </div>
+                    </div>
+                    <div class="p-3 bg-dark bg-opacity-50 rounded-2 mb-3">
+                        <div class="fw-bold text-white mb-1"><i class="bi bi-bullseye text-warning me-2"></i>Target Goal: ASP.NET Developer</div>
+                        <div class="text-muted small">Required: C#, ASP.NET Core, SQL Server, Web API, Git, EF Core</div>
+                    </div>
+                    @await Html.PartialAsync("_VerifiedBadge", ("Microsoft Certified: C# Specialist", "Microsoft", "8f3a1c9e02b4512a87d401c9b3e1f0a2d5e781a9c3b4e5f6a7b8c9d0e1f2a3b4"))
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Perspectives Section -->
+<section class="py-5 bg-white">
+    <div class="container py-5">
+        <div class="text-center mb-5">
+            <span class="text-primary fw-bold uppercase tracking-wider">Perspectives</span>
+            <h2 class="fw-bold fs-1 mt-2">Tailored for every stakeholder in placement ecosystems</h2>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-3">
+                <div class="card h-100 border-0 shadow-sm p-4">
+                    <div class="display-5 text-primary mb-3"><i class="bi bi-mortarboard-fill"></i></div>
+                    <h4 class="fw-bold">Students</h4>
+                    <p class="text-secondary">Know exactly what skills you lack for your dream job and build verifiable proof of competency.</p>
+                    <ul class="list-unstyled text-secondary small mb-4">
+                        <li><i class="bi bi-check-lg text-success me-2"></i>Skill Gap % Analysis</li>
+                        <li><i class="bi bi-check-lg text-success me-2"></i>5-Level Structured Roadmap</li>
+                        <li><i class="bi bi-check-lg text-success me-2"></i>Public Verified Portfolio</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card h-100 border-0 shadow-sm p-4">
+                    <div class="display-5 text-primary mb-3"><i class="bi bi-building"></i></div>
+                    <h4 class="fw-bold">Recruiters</h4>
+                    <p class="text-secondary">Post internships with minimum skill match thresholds and auto-evaluate incoming applicants.</p>
+                    <ul class="list-unstyled text-secondary small mb-4">
+                        <li><i class="bi bi-check-lg text-success me-2"></i>Skill Match % Ranking</li>
+                        <li><i class="bi bi-check-lg text-success me-2"></i>Auto Selected / Rejected Rule</li>
+                        <li><i class="bi bi-check-lg text-success me-2"></i>Manual Recruiter Override</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card h-100 border-0 shadow-sm p-4">
+                    <div class="display-5 text-primary mb-3"><i class="bi bi-graph-up-arrow"></i></div>
+                    <h4 class="fw-bold">Faculty</h4>
+                    <p class="text-secondary">Track institutional placement readiness and pinpoint top missing skills across all cohorts.</p>
+                    <ul class="list-unstyled text-secondary small mb-4">
+                        <li><i class="bi bi-check-lg text-success me-2"></i>Aggregate Readiness Stats</li>
+                        <li><i class="bi bi-check-lg text-success me-2"></i>Top Missing Skills Analytics</li>
+                        <li><i class="bi bi-check-lg text-success me-2"></i>Certification Verification</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card h-100 border-0 shadow-sm p-4">
+                    <div class="display-5 text-primary mb-3"><i class="bi bi-shield-lock-fill"></i></div>
+                    <h4 class="fw-bold">Admin</h4>
+                    <p class="text-secondary">Full control over master skill catalogs, career goals, project recommendations, and users.</p>
+                    <ul class="list-unstyled text-secondary small mb-4">
+                        <li><i class="bi bi-check-lg text-success me-2"></i>User & Role Management</li>
+                        <li><i class="bi bi-check-lg text-success me-2"></i>Master Skill Taxonomy</li>
+                        <li><i class="bi bi-check-lg text-success me-2"></i>System-wide Health Logs</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="bg-dark text-secondary py-4 border-top border-secondary border-opacity-25">
+    <div class="container text-center">
+        <p class="mb-0 text-white">© 2026 SkillBridge. All rights reserved.</p>
+    </div>
+</footer>
